@@ -526,6 +526,7 @@ GameObject:
   - component: {fileID: 903828531}
   - component: {fileID: 903828533}
   - component: {fileID: 903828532}
+  - component: {fileID: 903828534}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -613,10 +614,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7347e5167abb64880aa6560d9fcf30e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walk_speed: 10
-  sprint_speed: 10
-  jump_height: 10
-  double_jump_height: 2
+  default_double_jumps: 1
+  default_wall_jumps: 1
 --- !u!50 &903828532
 Rigidbody2D:
   serializedVersion: 4
@@ -664,6 +663,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &903828534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 903828528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7347e5167abb64880aa6560d9fcf30e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  default_double_jumps: 1
+  default_wall_jumps: 1
 --- !u!1 &915193131
 GameObject:
   m_ObjectHideFlags: 0
