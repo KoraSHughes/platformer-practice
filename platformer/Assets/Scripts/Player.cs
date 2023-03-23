@@ -35,11 +35,19 @@ public class Player : MonoBehaviour
 
     GameManager _gameManager;
     Rigidbody2D _rigidbody2D;
+    GameObject foot;  // bottom of player, used to check if we are on the ground
+
 
     void Start()
     {
         _gameManager = GameObject.FindObjectOfType<GameManager>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
+        // foot = transform.Find("feet");
+        foreach (Transform child in transform)
+          {
+              if (child.tag == "feet")
+                  foot = child.gameObject;
+          }
 
         double_jumps = default_double_jumps;
         wall_jumps = default_wall_jumps;
@@ -69,11 +77,6 @@ public class Player : MonoBehaviour
 
             if (is_still()){
                 player_state = state.idle; // player idle
-            }
-        }
-        else {
-            if (is_still()){
-                player_state = state.jumping; // player idle
             }
         }
 
@@ -143,6 +146,7 @@ public class Player : MonoBehaviour
     }
     private bool check_for_platform(){
         // TODO: check for nearby platform
+        // List<string> objs = foot.GetComponent<FindObjects>().getObjs();
         return true;
     }
     private bool is_grounded(){  // not moving much vertically
