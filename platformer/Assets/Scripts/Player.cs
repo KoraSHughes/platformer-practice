@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     public int default_wall_jumps = 1;
     float walk_speed = 5;
     float sprint_speed;
-    float jump_height = 6f;
+    float jump_height = 4f;
     float double_jump_height;
 
     public enum state{  // TODO: attach sprites to states
@@ -169,7 +169,7 @@ public class Player : MonoBehaviour
         return (double_jumps, wall_jumps);
     }
     public void updateSprint(){
-        sprint_speed = walk_speed*2f;
+        sprint_speed = walk_speed*1.5f;
     }
     public void updateJump(){
         double_jump_height = jump_height/1.5f;
