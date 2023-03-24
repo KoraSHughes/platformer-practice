@@ -40,11 +40,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2904303159837965360}
+  - component: {fileID: 6437098096833334498}
   - component: {fileID: 6437098096833334501}
-  - component: {fileID: 6437098096833334503}
   - component: {fileID: 6437098096833334497}
   - component: {fileID: 6437098096833334496}
-  - component: {fileID: 6437098096833334498}
   m_Layer: 6
   m_Name: player
   m_TagString: Player
@@ -70,6 +69,30 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6437098096833334498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4279147752148749530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7347e5167abb64880aa6560d9fcf30e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  default_double_jumps: 1
+  default_wall_jumps: 1
+  default_dashes: 1
+  feet: {fileID: 6437098096582027265}
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 1
+  left: {fileID: 8164347837975931537}
+  right: {fileID: 3253156800284931856}
+  whatIsWall:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!212 &6437098096833334501
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -122,30 +145,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6437098096833334503
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4279147752148749530}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7347e5167abb64880aa6560d9fcf30e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  default_double_jumps: 1
-  default_wall_jumps: 1
-  default_dashes: 1
-  feet: {fileID: 6437098096582027265}
-  whatIsGround:
-    serializedVersion: 2
-    m_Bits: 1
-  left: {fileID: 0}
-  right: {fileID: 0}
-  whatIsWall:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!61 &6437098096833334497
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -193,30 +192,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &6437098096833334498
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4279147752148749530}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7347e5167abb64880aa6560d9fcf30e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  default_double_jumps: 1
-  default_wall_jumps: 1
-  default_dashes: 1
-  feet: {fileID: 6437098096582027265}
-  whatIsGround:
-    serializedVersion: 2
-    m_Bits: 1
-  left: {fileID: 8164347837975931537}
-  right: {fileID: 3253156800284931856}
-  whatIsWall:
-    serializedVersion: 2
-    m_Bits: 128
 --- !u!1 &6437098096582027265
 GameObject:
   m_ObjectHideFlags: 0

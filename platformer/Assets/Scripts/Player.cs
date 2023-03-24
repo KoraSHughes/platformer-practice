@@ -80,9 +80,9 @@ public class Player : MonoBehaviour
 
         Debug.Log("Player State: " + player_state.ToString() + ", Jumps: "+ (double_jumps, wall_jumps).ToString()
                   + ", Attacking: " + is_attacking.ToString() + ", Grounded|Still?" + (is_grounded, is_still()).ToString()
-                  + ", Dash CD: " + dash_cooldown.ToString() + ", Jump CD: " + jump_cooldown.ToString());
+                  + ", Dash CD: " + dash_cooldown.ToString() + ", Jump CD: " + jump_cooldown.ToString() + ", Wall?: " + check_for_wall().ToString());
 
-        float yMove = Input.GetAxis("Vertical");
+        float yMove = Input.GetAxis("Vertical");  // TODO: change this input
         float xMove = Input.GetAxis("Horizontal");
 
         if (is_grounded){  // on the ground
@@ -98,7 +98,7 @@ public class Player : MonoBehaviour
             }
             else if (yMove > 0 && jump_cooldown == 0) { // jumping
                 _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, jump_height);
-                jump_cooldown += 0.4f;
+                jump_cooldown += 0.3f;
                 player_state = state.jumping;
             }
             else if (xMove != 0){  // walking
@@ -125,9 +125,9 @@ public class Player : MonoBehaviour
             else if (yMove > 0 && jump_cooldown == 0) { // extra jumping
                 int wall_dir = check_for_wall();
                 if (wall_jumps > 0 && wall_dir != 0){  // wall-jumping
-                    _rigidbody2D.velocity = new Vector2(wall_dir*walk_speed, double_jump_height);
+                    _rigidbody2D.velocity = new Vector2(wall_dir*walk_speed*2, jump_height);
                     wall_jumps -= 1;
-                    jump_cooldown += 0.2f;
+                    jump_cooldown += 0.6f;
                     // double_jumps += 1;
                     player_state = state.wall_jumping;
                 }
