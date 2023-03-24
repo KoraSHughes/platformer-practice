@@ -7,7 +7,7 @@ public class MoveHorizontal : MonoBehaviour
     private Vector2 startPos;
     private Vector2 newPos;
     public float speed = 0.5f;// SPEED OF MOVEMENT
-    public int distance = 1; // MAX DISTANCE FOR DIRECTION X
+    public float distance = 1f; // MAX DISTANCE FOR DIRECTION X
     // Start is called before the first frame update
     void Start()
     {

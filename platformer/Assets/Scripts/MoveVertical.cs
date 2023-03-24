@@ -7,7 +7,7 @@ public class MoveVertical : MonoBehaviour
     private Vector2 startPos;
     private Vector2 newPos;
     public float speed = 1;// SPEED OF MOVEMENT
-    public int distance = 5; // MAX DISTANCE FOR DIRECTION Y
+    public float distance = 5; // MAX DISTANCE FOR DIRECTION Y
     // Start is called before the first frame update
     void Start()
     {
