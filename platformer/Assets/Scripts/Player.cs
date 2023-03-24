@@ -77,6 +77,9 @@ public class Player : MonoBehaviour
                 player_state = state.idle; // player idle
             }
         }
+        else{
+            // player_state.state = state.jumping;
+        }
 
         if (Input.GetButtonDown("Vertical")){  // jumping attempt TODO: change to button?
             if (is_jumping()){
