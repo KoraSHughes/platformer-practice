@@ -13,11 +13,11 @@ public class Player : MonoBehaviour
 
     public enum state{  // TODO: attach sprites to states
         idle,
-            // shooting,
+            // attacking,
         walking,
-            // walk_shooting,
+            // walk_attacking,
                 sprinting,
-                    // sprint_shooting,
+                    // sprint_attacking,
         jumping,  // Note: anything past this counts as jumping (index: 3)
                 jump_walking,
                 jump_sprinting,
@@ -29,26 +29,21 @@ public class Player : MonoBehaviour
             //     double_jump_sprinting
     }
     state player_state = state.idle;
-    bool is_shooting = false;
+    bool is_attacking = false;
     int double_jumps;
     int wall_jumps;
 
     GameManager _gameManager;
     Rigidbody2D _rigidbody2D;
-    GameObject foot;  // bottom of player, used to check if we are on the ground
-
+    
+    public GameObject feet;  // bottom of player, used to check if we are on the ground
+    public LayerMask whatIsGround;
+    bool is_grounded = true;
 
     void Start()
     {
         _gameManager = GameObject.FindObjectOfType<GameManager>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
-        // foot = transform.Find("feet");
-        foreach (Transform child in transform)
-          {
-              if (child.tag == "feet")
-                  foot = child.gameObject;
-          }
-
         double_jumps = default_double_jumps;
         wall_jumps = default_wall_jumps;
         updateSprint();
@@ -62,16 +57,19 @@ public class Player : MonoBehaviour
     
     void Update()
     {
+        is_grounded = Physics2D.OverlapCircle(feet.transform.position, .3f, whatIsGround);
+
+
         Debug.Log("Player State: " + player_state.ToString() + ", Jumps: "+ (double_jumps, wall_jumps).ToString()
-                  + ", Shooting: " + is_shooting.ToString() + ", Grounded|Jumping|Still?" + (is_grounded(), is_jumping(), is_still()).ToString());
-        if (is_grounded() && is_jumping()){
+                  + ", Attacking: " + is_attacking.ToString() + ", Grounded|Jumping|Still?" + (is_grounded, is_jumping(), is_still()).ToString());
+        if (is_grounded && is_jumping()){
             Debug.LogError("Contradiction in Jumping & Groundedness");
         }
 
         _rigidbody2D.angularVelocity = 0f; // TODO: make sure obj doesnt rotate
 
 
-        if (is_grounded()){  // double jump reset
+        if (is_grounded){  // double jump reset
             double_jumps = default_double_jumps;
             wall_jumps = default_wall_jumps;
 
@@ -80,14 +78,14 @@ public class Player : MonoBehaviour
             }
         }
 
-
-        if (Input.GetButtonDown("Vertical")){  // jumping attempt
+        if (Input.GetButtonDown("Vertical")){  // jumping attempt TODO: change to button?
             if (is_jumping()){
                 int wall_dir = check_for_wall();
                 if (wall_jumps > 0 && wall_dir != 0){  // wall-jumping
                     _rigidbody2D.velocity = new Vector2(wall_dir*sprint_speed, double_jump_height);
                     player_state = state.wall_jumping;
                     wall_jumps -= 1;
+                    double_jumps += 1;
                 }
                 else if(double_jumps > 0){   // double-jumping
                     if (_rigidbody2D.velocity.y > double_jump_height){
@@ -100,9 +98,9 @@ public class Player : MonoBehaviour
                     double_jumps -= 1;
                 }
             }
-            else if (is_grounded()){
-                player_state = state.jumping;
+            else if (is_grounded){
                 _rigidbody2D.velocity += new Vector2(0, jump_height);
+                player_state = state.jumping;
                 // TODO: fix state where jump height is lower when moving
                 // TODO: fix state where double jump counter decrements from normal jump
             }
@@ -132,11 +130,11 @@ public class Player : MonoBehaviour
         }
 
 
-        if (Input.GetButton("Jump")){ // shooting
-            is_shooting = true;
+        if (Input.GetButton("Jump")){ // attacking
+            is_attacking = true;
         }
         else{
-            is_shooting = false;
+            is_attacking = false;
         }
     }
 
@@ -144,17 +142,8 @@ public class Player : MonoBehaviour
         // TODO: finds nearest wall and returns -1 if left of user, 0 if not close enough, and 1 if right of user
         return 0;
     }
-    private bool check_for_platform(){
-        // TODO: check for nearby platform
-        // List<string> objs = foot.GetComponent<FindObjects>().getObjs();
-        return true;
-    }
-    private bool is_grounded(){  // not moving much vertically
-        // =idle/walking/sprinting
-        return _rigidbody2D.velocity.y <= 0.5f && _rigidbody2D.velocity.y >= -0.5f && check_for_platform();
-    }
     private bool is_jumping(){  // we are jumping
-        // jumping/double-jumping/wall-jumping + any combo of sprinting/walking/shooting
+        // jumping/double-jumping/wall-jumping + any combo of sprinting/walking/attacking
         return (int)player_state >= (int)state.jumping;
     }
     private bool is_still(){  // not moving much horizontally
