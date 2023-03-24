@@ -92,7 +92,7 @@ public class Player : MonoBehaviour
                 }
                 else if(double_jumps > 0){   // double-jumping
                     if (_rigidbody2D.velocity.y > double_jump_height){
-                        _rigidbody2D.velocity += new Vector2(0, double_jump_height/2);
+                        _rigidbody2D.velocity += new Vector2(0, double_jump_height);
                     }
                     else{  // cancel current momentum if we aren't going up
                         _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, double_jump_height);
