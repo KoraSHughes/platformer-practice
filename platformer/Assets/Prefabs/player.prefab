@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6437098096833334497}
   - component: {fileID: 6437098096833334496}
   - component: {fileID: 6437098096833334498}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -103,6 +103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   default_double_jumps: 1
   default_wall_jumps: 1
+  default_dashes: 1
   feet: {fileID: 6437098096582027265}
   whatIsGround:
     serializedVersion: 2
@@ -168,10 +169,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   default_double_jumps: 1
   default_wall_jumps: 1
-  feet: {fileID: 0}
+  default_dashes: 1
+  feet: {fileID: 6437098096582027265}
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1
 --- !u!1 &6437098096582027265
 GameObject:
   m_ObjectHideFlags: 0
@@ -181,7 +183,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6437098096582027266}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: feet
   m_TagString: Untagged
   m_Icon: {fileID: 0}

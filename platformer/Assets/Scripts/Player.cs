@@ -53,7 +53,7 @@ public class Player : MonoBehaviour
     
     void Update()
     {
-        is_grounded = Physics2D.OverlapCircle(feet.transform.position, .3f, whatIsGround);
+        is_grounded = Physics2D.OverlapCircle(feet.transform.position, .05f, whatIsGround);
         if (dash_cooldown > 0){
             dash_cooldown -= Time.deltaTime;
         }
@@ -85,12 +85,12 @@ public class Player : MonoBehaviour
                 int facing = (xMove >= 0) ? 1 : -1;
                 _rigidbody2D.velocity = new Vector2(dash_dist*facing, _rigidbody2D.velocity.y/2);
                 //Note: we half our vertical velocity (better feel)
-                dash_cooldown += 2f;
+                dash_cooldown += 1.5f;
                 player_state = state.dashing;
             }
             else if (yMove > 0 && jump_cooldown == 0) { // jumping
                 _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, jump_height);
-                jump_cooldown += 0.7f;
+                jump_cooldown += 0.4f;
                 player_state = state.jumping;
             }
             else if (xMove != 0){  // walking
@@ -115,16 +115,13 @@ public class Player : MonoBehaviour
                 player_state = state.dashing;
             }
             else if (yMove > 0 && jump_cooldown == 0) { // extra jumping
-                _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, jump_height);
-                jump_cooldown += 0.5f;
-                player_state = state.jumping;
-
                 int wall_dir = check_for_wall();
                 if (wall_jumps > 0 && wall_dir != 0){  // wall-jumping
                     _rigidbody2D.velocity = new Vector2(wall_dir*walk_speed, double_jump_height);
-                    player_state = state.wall_jumping;
                     wall_jumps -= 1;
+                    jump_cooldown += 0.2f;
                     // double_jumps += 1;
+                    player_state = state.wall_jumping;
                 }
                 else if(double_jumps > 0){   // double-jumping
                     if (_rigidbody2D.velocity.y > double_jump_height){
@@ -133,8 +130,9 @@ public class Player : MonoBehaviour
                     else{  // cancel current momentum if we aren't going up
                         _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, double_jump_height);
                     }
-                    player_state = state.double_jumping;
                     double_jumps -= 1;
+                    jump_cooldown += 0.5f;
+                    player_state = state.double_jumping;
                 }
                 else{
                     player_state = state.jumping;
