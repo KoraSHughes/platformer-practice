@@ -616,6 +616,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   default_double_jumps: 1
   default_wall_jumps: 1
+  feet: {fileID: 0}
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!50 &903828532
 Rigidbody2D:
   serializedVersion: 4
@@ -677,6 +681,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   default_double_jumps: 1
   default_wall_jumps: 1
+  feet: {fileID: 0}
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &915193131
 GameObject:
   m_ObjectHideFlags: 0
