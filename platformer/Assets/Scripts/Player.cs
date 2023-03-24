@@ -37,6 +37,12 @@ public class Player : MonoBehaviour
     public LayerMask whatIsGround;
     bool is_grounded = true;
 
+    public GameObject left;
+    public GameObject right;
+    public LayerMask whatIsWall;
+    bool wall_on_left = false;
+    bool wall_on_right = false;
+
     void Start()
     {
         _gameManager = GameObject.FindObjectOfType<GameManager>();
@@ -53,7 +59,9 @@ public class Player : MonoBehaviour
     
     void Update()
     {
-        is_grounded = Physics2D.OverlapCircle(feet.transform.position, .05f, whatIsGround);
+        is_grounded = Physics2D.OverlapCircle(feet.transform.position, .1f, whatIsGround);
+        wall_on_left = Physics2D.OverlapCircle(left.transform.position, .01f, whatIsWall);
+        wall_on_right = Physics2D.OverlapCircle(right.transform.position, .01f, whatIsWall);
         if (dash_cooldown > 0){
             dash_cooldown -= Time.deltaTime;
         }
@@ -158,7 +166,15 @@ public class Player : MonoBehaviour
 
     private int check_for_wall(){
         // TODO: finds nearest wall and returns -1 if left of user, 0 if not close enough, and 1 if right of user
-        return 0;
+        if (wall_on_right){
+            return 1;
+        }
+        else if (wall_on_left) {
+            return -1;
+        }
+        else{
+            return 0;
+        }
     }
     private bool is_still(){  // not moving much horizontally
         return _rigidbody2D.velocity.x <= 0.5f && _rigidbody2D.velocity.x >= -0.5f && _rigidbody2D.velocity.y <= 0.3f && _rigidbody2D.velocity.y >= -0.3f;
