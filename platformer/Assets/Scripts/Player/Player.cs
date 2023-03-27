@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
     float jumpCooldown = 0f;
     float dashCooldown = 0f;
 
-    float walkSpeed = 5;
+    float walkSpeed = 4;
     float dashDist = 7f;
     float jumpHeight = 4f;
     float dbJumpHeight = 3f;
