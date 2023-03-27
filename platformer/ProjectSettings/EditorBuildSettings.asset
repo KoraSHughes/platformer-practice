@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Level1 Jump.unity
     guid: a2afd3340c654e24bb412b34f97c4de3
   - enabled: 1
-    path: Assets/Scenes/Level2 Sprint.unity
+    path: Assets/Scenes/Level2 Dash.unity
     guid: bc35cfc08a0a62c449cf7e632efc54fc
   - enabled: 1
     path: Assets/Scenes/Level3 Double.unity
