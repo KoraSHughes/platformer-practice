@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
                 jumpWalking,
             dashing,
             dbJumping,
+        wallSliding,
             wallJumping
     }
     
@@ -91,28 +92,38 @@ public class Player : MonoBehaviour
 
         _rigidbody2D.angularVelocity = 0f; // TODO: make sure obj doesnt rotate
     #endregion
-    
-        Debug.Log("Player State: " + playerState.ToString() + ", Jumps: "+ (dbleJumps, wallJumps).ToString()
-                  + ", Attacking: " + isAttacking.ToString() + ", Grounded|Still?" + (is_grounded, is_still()).ToString()
-                  + ", Dash CD: " + dashCooldown.ToString() + ", Jump CD: " + jumpCooldown.ToString() + ", Wall?: " + check_for_wall().ToString());
-        
+        int tempDir = (Input.GetAxis("Horizontal") > 0) ? 1 : ((Input.GetAxis("Horizontal") == 0) ? 0 : -1);
+        Debug.Log("Player State: " + playerState.ToString()
+                  + ", Facing: " + facing.ToString()
+                  + ", Jumps: "+ (dbleJumps, wallJumps).ToString()
+                // + ", Attacking: " + isAttacking.ToString()
+                // + ", Grounded|Still?" + (is_grounded, is_still()).ToString()
+                //   + ", Dash CD: " + dashCooldown.ToString()
+                //   + ", Jump CD: " + jumpCooldown.ToString()
+                  + ", Wall(left, right): " + (wallOnLeft, wallOnRight).ToString()
+                  + ", WallDir?: " + check_for_wall().ToString()
+                  + ", MoveDir: " + tempDir.ToString());
         movementControl();
     }
 
     private int check_for_wall(){
-        // TODO: finds nearest wall and returns -1 if left of user, 0 if not close enough, and 1 if right of user
+        // finds nearest wall and returns -1 if left of user, 0 if not close enough, and 1 if right of user
+        // Note: right and left flip on runtime so we swap logic here
+
+        // TODO: fix (always returns right wall for some reason)
         if (wallOnRight){
-            return 1;
+            return -1;  
         }
         else if (wallOnLeft) {
-            return -1;
+            return 1;
         }
         else{
             return 0;
         }
     }
-    private bool is_still(){  // not moving much horizontally
-        return _rigidbody2D.velocity.x <= 0.5f && _rigidbody2D.velocity.x >= -0.5f && _rigidbody2D.velocity.y <= 0.3f && _rigidbody2D.velocity.y >= -0.3f;
+    private bool is_still(){  // not moving much
+        // Note: vertical stillness must be < descent speed on wall sliding
+        return _rigidbody2D.velocity.x <= 0.5f && _rigidbody2D.velocity.x >= -0.5f && _rigidbody2D.velocity.y <= 0.2f && _rigidbody2D.velocity.y >= -0.2f;
     }
     
 
@@ -134,6 +145,10 @@ public class Player : MonoBehaviour
 
     void movementControl() {
         float yMove = Input.GetAxis("Vertical");  // TODO: change this input
+        bool wantsJump = false;
+        if (yMove > 0){
+            wantsJump = true;
+        }
         float xMove = Input.GetAxis("Horizontal");
 
         if (is_grounded){  // on the ground
@@ -143,7 +158,7 @@ public class Player : MonoBehaviour
             if (Input.GetButton("Fire3") && dashCooldown == 0) {  // dashing
                 dash();
             }
-            else if (yMove > 0 && jumpCooldown == 0) { // jumping
+            else if (wantsJump && jumpCooldown == 0) { // jumping
                 jump();
             }
             else if (xMove != 0){  // walking
@@ -159,26 +174,41 @@ public class Player : MonoBehaviour
             }
         }
         else {  // mid-air
-            if(Input.GetButton("Fire3") && dashCooldown == 0){  // dashing
-                dash();
+            int wallDir = (check_for_wall() == 0) ? 0 : facing;
+            int moveDir = (xMove >= 0) ? 1 : -1;
+            if (wallDir != 0 && _rigidbody2D.velocity.y <= 0
+                && playerState != state.wallJumping && xMove == 0){
+                wallSlide();
             }
-            else if (yMove > 0 && jumpCooldown == 0) { // extra jumping
-                int wallDir = check_for_wall();
-                if (wallJumps > 0 && wallDir != 0){  // wall-jumping
+
+            if (playerState == state.wallSliding){  // currently sliding on a wall
+                if(Input.GetButton("Fire3") && dashCooldown == 0){  // dashing
+                    dash(-wallDir);  // can only dash opposite to wall (-facing)?
+                }
+                else if (wantsJump && jumpCooldown == 0 && wallJumps > 0) { // wall-jump
                     wallJump(wallDir);
                 }
-                else if(dbleJumps > 0){   // double-jumping
+                else{
+                    // Note: can only move opposite to wall when wall-sliding, else slide persists
+                    if (xMove != 0){
+                        Debug.Log("GOTHERE");
+                        walk(xMove);
+                    }
+                }
+            }
+            else{
+                if(Input.GetButton("Fire3") && dashCooldown == 0){  // dashing
+                    dash();
+                }
+                else if (wantsJump && jumpCooldown == 0 && dbleJumps > 0) {  // double-jumping
                     doubleJump();
+                }
+                else if (xMove != 0){  // walking
+                    walk(xMove, true);
                 }
                 else{
                     playerState = state.jumping;
                 }
-            }
-            else if (xMove != 0){  // walking
-                walk(xMove);
-            }
-            else{
-                playerState = state.jumping;
             }
         }
         
@@ -193,11 +223,16 @@ public class Player : MonoBehaviour
     }
 
 #region movement
-    void walk(float xMove) {
+    void walk(float xMove, bool isAirborn = false) {
         facing = (xMove >= 0) ? 1 : -1;
         if(is_grounded) {
             _rigidbody2D.velocity = new Vector2(xMove*walkSpeed, _rigidbody2D.velocity.y);
-            playerState = state.walking;
+            if (isAirborn == false){
+                playerState = state.walking;
+            }
+            else{
+                playerState = state.jumpWalking;
+            }
         }
     }
 
@@ -209,9 +244,15 @@ public class Player : MonoBehaviour
         }
     }
 
-    void dash() {
+    void dash(int face_override = 0) {
         //Note: we half our vertical velocity (better feel)
-        _rigidbody2D.velocity = new Vector2(dashDist*facing, _rigidbody2D.velocity.y/2);
+        if (face_override == 0) {
+            _rigidbody2D.velocity = new Vector2(dashDist*facing, _rigidbody2D.velocity.y/2);
+        }
+        else{
+            _rigidbody2D.velocity = new Vector2(dashDist*face_override, _rigidbody2D.velocity.y/2);
+            facing = face_override;
+        }
         
         if(is_grounded) {
             dashCooldown += 1.5f;
@@ -231,16 +272,24 @@ public class Player : MonoBehaviour
             _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, dbJumpHeight);
         }
         dbleJumps -= 1;
-        jumpCooldown += 0.5f;
+        jumpCooldown += 0.6f;
         playerState = state.dbJumping;
     }
 
     void wallJump(int wallDir) {
-        _rigidbody2D.velocity = new Vector2(wallDir*walkSpeed*2, jumpHeight);
+        _rigidbody2D.velocity = new Vector2(-wallDir*walkSpeed/1.5f, dbJumpHeight*1.5f);
         wallJumps -= 1;
         jumpCooldown += 0.6f;
+        facing *= -1; // switch facing directions
         // dbleJumps += 1;
+        // dashCooldown = 0;
         playerState = state.wallJumping;
+    }
+
+    void wallSlide(){
+        // TODO: implement user sliding down a wall
+        _rigidbody2D.velocity = new Vector2(0, -0.3f);
+        playerState = state.wallSliding;
     }
 #endregion
 
