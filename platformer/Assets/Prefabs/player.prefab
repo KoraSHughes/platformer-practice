@@ -81,9 +81,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7347e5167abb64880aa6560d9fcf30e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  default_double_jumps: 1
-  default_wall_jumps: 1
-  default_dashes: 1
+  _playerData: {fileID: 0}
   feet: {fileID: 6437098096582027265}
   whatIsGround:
     serializedVersion: 2
@@ -93,6 +91,9 @@ MonoBehaviour:
   whatIsWall:
     serializedVersion: 2
     m_Bits: 128
+  defNumDbJumps: 1
+  defNumWallJumps: 1
+  defNumDashes: 1
 --- !u!212 &6437098096833334501
 SpriteRenderer:
   m_ObjectHideFlags: 0

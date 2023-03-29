@@ -21,7 +21,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Level3 Double.unity
     guid: 63d50d8cd1bd93c4db121fd6850fb95f
   - enabled: 1
-    path: Assets/Scenes/Level4 All.unity
+    path: Assets/Scenes/Level4 WallJump.unity
     guid: 6dd98f36237faad48b2882215b59d918
   - enabled: 1
     path: Assets/Scenes/YouWin.unity
