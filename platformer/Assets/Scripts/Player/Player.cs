@@ -89,16 +89,15 @@ public class Player : MonoBehaviour
         _rigidbody2D.angularVelocity = 0f; // TODO: make sure obj doesnt rotate
     #endregion
 
-        int tempDir = (Input.GetAxis("Horizontal") > 0) ? 1 : ((Input.GetAxis("Horizontal") == 0) ? 0 : -1);
         Debug.Log("Player State: " + playerState.ToString()
                   + ", Facing: " + facing.ToString()
                   + ", Jumps: "+ (dbleJumps, wallJumps).ToString()
-                // + ", Attacking: " + isAttacking.ToString()
+                + ", Attacking: " + isAttacking.ToString()
                 // + ", Grounded|Still?" + (is_grounded, is_still()).ToString()
                 //   + ", Dash CD: " + dashCooldown.ToString()
                 //   + ", Jump CD: " + jumpCooldown.ToString()
-                  + ", WallDir?: " + check_for_wall().ToString()
-                  + ", MoveDir: " + tempDir.ToString());
+                  + ", WallDir?: " + check_for_wall().ToString());
+
         movementControl();
     }
 
@@ -139,23 +138,15 @@ public class Player : MonoBehaviour
         return (dbleJumps, wallJumps);
     }
 
-    void updateTimers() {
-
-    }
-
     void movementControl() {
-        float yMove = Input.GetAxis("Vertical");  // TODO: change this input
-        bool wantsJump = false;
-        if (yMove > 0){
-            wantsJump = true;
-        }
+        bool wantsJump = Input.GetKey(KeyCode.Space) || Input.GetButton("Fire1"); // jumping = space bar | Xbox A (button0)
         float xMove = Input.GetAxis("Horizontal");
 
         if (is_grounded){  // on the ground
             dbleJumps = defNumDbJumps;
             wallJumps = defNumWallJumps;
 
-            if (Input.GetButton("Fire3") && dashCooldown == 0) {  // dashing
+            if (Input.GetButton("Fire3") && dashCooldown == 0) {  // dashing = Shift | Xbox B (button1)
                 dash();
             }
             else if (wantsJump && jumpCooldown == 0) { // jumping
@@ -197,7 +188,7 @@ public class Player : MonoBehaviour
                 }
             }
             else{
-                if(Input.GetButton("Fire3") && dashCooldown == 0){  // dashing
+                if(Input.GetButton("Fire3") && dashCooldown == 0){  // dashing = Shift | Xbox B (button1)
                     dash();
                 }
                 else if (wantsJump && jumpCooldown == 0 && dbleJumps > 0) {  // double-jumping
@@ -212,13 +203,18 @@ public class Player : MonoBehaviour
             }
         }
         
-        if (Input.GetButton("Jump")){ // attacking
+        if (Input.GetKey(KeyCode.Mouse0) || Input.GetButton("Fire2")){ // attacking = LMB | Xbox X (button2)
             //TODO: maybe add a attacking cooldown
             attack();
             isAttacking = true;
         }
         else{
             isAttacking = false;
+        }
+
+        if (Input.GetKey(KeyCode.Tab) ){  // pause menu = Tab | Xbox start (button7)
+            //TODO: add Input.GetButtonDown("joystick button 7")
+            //TODO: add pause menu
         }
     }
 

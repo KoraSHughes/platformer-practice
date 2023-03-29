@@ -285,6 +285,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 6419359252349622014, guid: b961be95c5bb840c7aa4d535a7ff1fff, type: 3}
+      propertyPath: ythreshold
+      value: 1.3
+      objectReference: {fileID: 0}
     - target: {fileID: 8299145150685360970, guid: b961be95c5bb840c7aa4d535a7ff1fff, type: 3}
       propertyPath: m_Name
       value: wall (1)
@@ -361,25 +365,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e6c174a3f48a2436bb674c1b63edffd9, type: 3}
---- !u!1 &581097115 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8299145150685360970, guid: b961be95c5bb840c7aa4d535a7ff1fff, type: 3}
-  m_PrefabInstance: {fileID: 447432513}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &581097118
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 581097115}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14994b41fb51241668d3a882c86dfdd7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  xthreshold: 0.7
-  ythreshold: 1.3
 --- !u!1 &990773568
 GameObject:
   m_ObjectHideFlags: 0
@@ -1293,25 +1278,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b961be95c5bb840c7aa4d535a7ff1fff, type: 3}
---- !u!1 &1280163010507291837 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8299145150685360970, guid: b961be95c5bb840c7aa4d535a7ff1fff, type: 3}
-  m_PrefabInstance: {fileID: 1280163010507291836}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1280163010507291841
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1280163010507291837}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14994b41fb51241668d3a882c86dfdd7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  xthreshold: 0.7
-  ythreshold: 2.7
 --- !u!4 &3986972112041089801 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3303551212457991284, guid: 1abcd26cc4b844663bffa690194c500b, type: 3}
