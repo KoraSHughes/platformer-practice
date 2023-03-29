@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 6437098096833334501}
   - component: {fileID: 6437098096833334497}
   - component: {fileID: 6437098096833334496}
+  - component: {fileID: 6733508942927619850}
   m_Layer: 6
   m_Name: player
   m_TagString: Player
@@ -81,9 +82,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7347e5167abb64880aa6560d9fcf30e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  default_double_jumps: 1
-  default_wall_jumps: 1
-  default_dashes: 1
+  _playerData: {fileID: 0}
   feet: {fileID: 6437098096582027265}
   whatIsGround:
     serializedVersion: 2
@@ -93,6 +92,9 @@ MonoBehaviour:
   whatIsWall:
     serializedVersion: 2
     m_Bits: 128
+  defNumDbJumps: 1
+  defNumWallJumps: 1
+  defNumDashes: 1
 --- !u!212 &6437098096833334501
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -192,6 +194,26 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!95 &6733508942927619850
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4279147752148749530}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ad9167f0bcbb4c844832eaa9163e8b85, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1 &6437098096582027265
 GameObject:
   m_ObjectHideFlags: 0
