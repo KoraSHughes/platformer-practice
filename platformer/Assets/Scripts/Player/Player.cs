@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
         walking,
             // walkAttacking,
         jumping,  // Note: anything past this counts as jumping (index: 3)
-                jumpWalking,
+                jumpWalking,  // TODO: implement falling
             dashing,
             dbJumping,
         wallSliding,
@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
     float jumpCooldown = 0f;
     float dashCooldown = 0f;
 
-    float walkSpeed = 4;
+    float walkSpeed = 4f;
     float dashDist = 7f;
     float jumpHeight = 4f;
     float dbJumpHeight = 3f;
@@ -94,8 +94,8 @@ public class Player : MonoBehaviour
                   + ", Jumps: "+ (dbleJumps, wallJumps).ToString()
                 + ", Attacking: " + isAttacking.ToString()
                 // + ", Grounded|Still?" + (is_grounded, is_still()).ToString()
-                //   + ", Dash CD: " + dashCooldown.ToString()
-                //   + ", Jump CD: " + jumpCooldown.ToString()
+                  + ", Dash CD: " + dashCooldown.ToString()
+                  + ", Jump CD: " + jumpCooldown.ToString()
                   + ", WallDir?: " + check_for_wall().ToString());
 
         movementControl();
@@ -153,7 +153,7 @@ public class Player : MonoBehaviour
                 jump();
             }
             else if (xMove != 0){  // walking
-                walk(xMove);
+                walk(xMove, false);
             }
             else{
                 if (is_still()){
@@ -182,8 +182,7 @@ public class Player : MonoBehaviour
                 else{
                     // Note: can only move opposite to wall when wall-sliding, else slide persists
                     if (moveDir != wallDir){
-                        Debug.Log("GOT HERE");
-                        walk(xMove);
+                        walk(xMove, true);
                     }
                 }
             }
@@ -221,14 +220,16 @@ public class Player : MonoBehaviour
 #region movement
     void walk(float xMove, bool isAirborn = false) {
         facing = (xMove >= 0) ? 1 : -1;
-        if(is_grounded) {
-            _rigidbody2D.velocity = new Vector2(xMove*walkSpeed, _rigidbody2D.velocity.y);
-            if (isAirborn == false){
-                playerState = state.walking;
-            }
-            else{
-                playerState = state.jumpWalking;
-            }
+        if (isAirborn == true){
+            float addV = (_rigidbody2D.velocity.x*facing < walkSpeed) ? xMove*walkSpeed*0.007f : 0f;
+            // Note: we use dashDist here bc thats the fastest we want the user to be able to go in 
+            _rigidbody2D.velocity += new Vector2(addV, 0);
+            playerState = state.jumpWalking;
+        }
+        else{
+            _rigidbody2D.velocity = new Vector2(xMove*walkSpeed/2, _rigidbody2D.velocity.y);
+            // Note: we move slower horizontally in the air
+            playerState = state.walking;
         }
     }
 
@@ -243,10 +244,10 @@ public class Player : MonoBehaviour
     void dash(int face_override = 0) {
         //Note: we half our vertical velocity (better feel)
         if (face_override == 0) {
-            _rigidbody2D.velocity = new Vector2(dashDist*facing, _rigidbody2D.velocity.y/2);
+            _rigidbody2D.velocity = new Vector2(dashDist*facing, _rigidbody2D.velocity.y/4);
         }
         else{
-            _rigidbody2D.velocity = new Vector2(dashDist*face_override, _rigidbody2D.velocity.y/2);
+            _rigidbody2D.velocity = new Vector2(dashDist*face_override, _rigidbody2D.velocity.y/4);
             facing = face_override;
         }
         
