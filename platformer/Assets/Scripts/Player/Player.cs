@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
         walking,
             // walkAttacking,
         jumping,  // Note: anything past this counts as jumping (index: 3)
-                jumpWalking,
+                jumpWalking,  // TODO: implement falling
             dashing,
             dbJumping,
         wallSliding,
@@ -26,11 +26,7 @@ public class Player : MonoBehaviour
 
     public GameObject feet;  // bottom of player, used to check if we are on the ground
     public LayerMask whatIsGround;
-    public GameObject left;
-    public GameObject right;
-    public LayerMask whatIsWall;
-    bool wallOnLeft = false;
-    bool wallOnRight = false;
+    GameObject[] walls;
 
     public int defNumDbJumps = 1;
     public int defNumWallJumps = 1;
@@ -39,7 +35,7 @@ public class Player : MonoBehaviour
     float jumpCooldown = 0f;
     float dashCooldown = 0f;
 
-    float walkSpeed = 4;
+    float walkSpeed = 4f;
     float dashDist = 7f;
     float jumpHeight = 4f;
     float dbJumpHeight = 3f;
@@ -59,6 +55,8 @@ public class Player : MonoBehaviour
 
         dbleJumps = defNumDbJumps;
         wallJumps = defNumWallJumps;
+
+        walls = GameObject.FindGameObjectsWithTag("wall");
     }
 
     void FixedUpdate()
@@ -72,8 +70,6 @@ public class Player : MonoBehaviour
     void Update()
     {
         is_grounded = Physics2D.OverlapCircle(feet.transform.position, .1f, whatIsGround);
-        wallOnLeft = Physics2D.OverlapCircle(left.transform.position, .01f, whatIsWall);
-        wallOnRight = Physics2D.OverlapCircle(right.transform.position, .01f, whatIsWall);
         
     #region cooldowns
         if (dashCooldown > 0){
@@ -92,35 +88,38 @@ public class Player : MonoBehaviour
 
         _rigidbody2D.angularVelocity = 0f; // TODO: make sure obj doesnt rotate
     #endregion
-        int tempDir = (Input.GetAxis("Horizontal") > 0) ? 1 : ((Input.GetAxis("Horizontal") == 0) ? 0 : -1);
+
         Debug.Log("Player State: " + playerState.ToString()
                   + ", Facing: " + facing.ToString()
                   + ", Jumps: "+ (dbleJumps, wallJumps).ToString()
-                // + ", Attacking: " + isAttacking.ToString()
+                + ", Attacking: " + isAttacking.ToString()
                 // + ", Grounded|Still?" + (is_grounded, is_still()).ToString()
-                //   + ", Dash CD: " + dashCooldown.ToString()
-                //   + ", Jump CD: " + jumpCooldown.ToString()
-                  + ", Wall(left, right): " + (wallOnLeft, wallOnRight).ToString()
-                  + ", WallDir?: " + check_for_wall().ToString()
-                  + ", MoveDir: " + tempDir.ToString());
+                  + ", Dash CD: " + dashCooldown.ToString()
+                  + ", Jump CD: " + jumpCooldown.ToString()
+                  + ", WallDir?: " + check_for_wall().ToString());
+
         movementControl();
     }
 
     private int check_for_wall(){
         // finds nearest wall and returns -1 if left of user, 0 if not close enough, and 1 if right of user
-        // Note: right and left flip on runtime so we swap logic here
-
-        // TODO: fix (always returns right wall for some reason)
-        if (wallOnRight){
-            return -1;  
-        }
-        else if (wallOnLeft) {
-            return 1;
-        }
-        else{
+        if (walls.Length == 0){
             return 0;
         }
+        else{
+            GameObject closest = walls[0];   // find closest wall
+            float shortest_dist = Vector2.Distance(transform.position, closest.transform.position);
+            foreach (GameObject temp_wall in walls){
+                float dist = Vector2.Distance(transform.position, temp_wall.transform.position);
+                if (dist < shortest_dist){
+                    closest = temp_wall;
+                    shortest_dist = dist;
+                }
+            }
+            return closest.GetComponent<DetectPlayer>().wallToPlayer();  // return that wall's detection of player
+        }
     }
+
     private bool is_still(){  // not moving much
         // Note: vertical stillness must be < descent speed on wall sliding
         return _rigidbody2D.velocity.x <= 0.5f && _rigidbody2D.velocity.x >= -0.5f && _rigidbody2D.velocity.y <= 0.2f && _rigidbody2D.velocity.y >= -0.2f;
@@ -139,30 +138,22 @@ public class Player : MonoBehaviour
         return (dbleJumps, wallJumps);
     }
 
-    void updateTimers() {
-
-    }
-
     void movementControl() {
-        float yMove = Input.GetAxis("Vertical");  // TODO: change this input
-        bool wantsJump = false;
-        if (yMove > 0){
-            wantsJump = true;
-        }
+        bool wantsJump = Input.GetKey(KeyCode.Space) || Input.GetButton("Fire1"); // jumping = space bar | Xbox A (button0)
         float xMove = Input.GetAxis("Horizontal");
 
         if (is_grounded){  // on the ground
             dbleJumps = defNumDbJumps;
             wallJumps = defNumWallJumps;
 
-            if (Input.GetButton("Fire3") && dashCooldown == 0) {  // dashing
+            if (Input.GetButton("Fire3") && dashCooldown == 0) {  // dashing = Shift | Xbox B (button1)
                 dash();
             }
             else if (wantsJump && jumpCooldown == 0) { // jumping
                 jump();
             }
             else if (xMove != 0){  // walking
-                walk(xMove);
+                walk(xMove, false);
             }
             else{
                 if (is_still()){
@@ -174,11 +165,11 @@ public class Player : MonoBehaviour
             }
         }
         else {  // mid-air
-            int wallDir = (check_for_wall() == 0) ? 0 : facing;
-            int moveDir = (xMove >= 0) ? 1 : -1;
+            int wallDir = check_for_wall();
+            int moveDir = (xMove > 0) ? 1 : -1;
             if (wallDir != 0 && _rigidbody2D.velocity.y <= 0
-                && playerState != state.wallJumping && xMove == 0){
-                wallSlide();
+                && playerState != state.wallJumping && (xMove == 0 || moveDir == wallDir)){
+                wallSlide( (xMove == 0) ? false : true );
             }
 
             if (playerState == state.wallSliding){  // currently sliding on a wall
@@ -190,14 +181,13 @@ public class Player : MonoBehaviour
                 }
                 else{
                     // Note: can only move opposite to wall when wall-sliding, else slide persists
-                    if (xMove != 0){
-                        Debug.Log("GOTHERE");
-                        walk(xMove);
+                    if (moveDir != wallDir){
+                        walk(xMove, true);
                     }
                 }
             }
             else{
-                if(Input.GetButton("Fire3") && dashCooldown == 0){  // dashing
+                if(Input.GetButton("Fire3") && dashCooldown == 0){  // dashing = Shift | Xbox B (button1)
                     dash();
                 }
                 else if (wantsJump && jumpCooldown == 0 && dbleJumps > 0) {  // double-jumping
@@ -212,7 +202,7 @@ public class Player : MonoBehaviour
             }
         }
         
-        if (Input.GetButton("Jump")){ // attacking
+        if (Input.GetKey(KeyCode.Mouse0) || Input.GetButton("Fire2")){ // attacking = LMB | Xbox X (button2)
             //TODO: maybe add a attacking cooldown
             attack();
             isAttacking = true;
@@ -220,19 +210,26 @@ public class Player : MonoBehaviour
         else{
             isAttacking = false;
         }
+
+        if (Input.GetKey(KeyCode.Tab) ){  // pause menu = Tab | Xbox start (button7)
+            //TODO: add Input.GetButtonDown("joystick button 7")
+            //TODO: add pause menu
+        }
     }
 
 #region movement
     void walk(float xMove, bool isAirborn = false) {
         facing = (xMove >= 0) ? 1 : -1;
-        if(is_grounded) {
-            _rigidbody2D.velocity = new Vector2(xMove*walkSpeed, _rigidbody2D.velocity.y);
-            if (isAirborn == false){
-                playerState = state.walking;
-            }
-            else{
-                playerState = state.jumpWalking;
-            }
+        if (isAirborn == true){
+            float addV = (_rigidbody2D.velocity.x*facing < walkSpeed) ? xMove*walkSpeed*0.007f : 0f;
+            // Note: we use dashDist here bc thats the fastest we want the user to be able to go in 
+            _rigidbody2D.velocity += new Vector2(addV, 0);
+            playerState = state.jumpWalking;
+        }
+        else{
+            _rigidbody2D.velocity = new Vector2(xMove*walkSpeed/2, _rigidbody2D.velocity.y);
+            // Note: we move slower horizontally in the air
+            playerState = state.walking;
         }
     }
 
@@ -247,10 +244,10 @@ public class Player : MonoBehaviour
     void dash(int face_override = 0) {
         //Note: we half our vertical velocity (better feel)
         if (face_override == 0) {
-            _rigidbody2D.velocity = new Vector2(dashDist*facing, _rigidbody2D.velocity.y/2);
+            _rigidbody2D.velocity = new Vector2(dashDist*facing, _rigidbody2D.velocity.y/4);
         }
         else{
-            _rigidbody2D.velocity = new Vector2(dashDist*face_override, _rigidbody2D.velocity.y/2);
+            _rigidbody2D.velocity = new Vector2(dashDist*face_override, _rigidbody2D.velocity.y/4);
             facing = face_override;
         }
         
@@ -286,9 +283,15 @@ public class Player : MonoBehaviour
         playerState = state.wallJumping;
     }
 
-    void wallSlide(){
+    void wallSlide(bool slowly){
         // TODO: implement user sliding down a wall
-        _rigidbody2D.velocity = new Vector2(0, -0.3f);
+        if (slowly){
+            _rigidbody2D.velocity = new Vector2(0, -0.1f); // move down wall slower when moving toward wall
+        }
+        else{
+            _rigidbody2D.velocity = new Vector2(0, -0.5f);
+        }
+        
         playerState = state.wallSliding;
     }
 #endregion
