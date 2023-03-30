@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        walkJump = "Press A to go left\nPress D to go right\nPress W to jump";
+        walkJump = "Press A/LEFT to go left\nPress D/RIGHT to go right\nPress W to jump";
         dash = "Press SHIFT+A or SHIFT+D to dash";
         doubleJump = "Press SPACE while in the air to double jump";
         wallJump = "When jumping on a wall,\npress SPACE to jump over it";

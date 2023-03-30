@@ -104,6 +104,7 @@ public class Player : MonoBehaviour
     private void OnTriggerEnter(Collider other) {
         // if player collides with reward, destroy reward
         if (other.CompareTag("reward")) {
+            Debug.Log("REWARD");
             Destroy(other);
         }
     }
