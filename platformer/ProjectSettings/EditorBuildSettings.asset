@@ -24,6 +24,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Level4 WallJump.unity
     guid: 6dd98f36237faad48b2882215b59d918
   - enabled: 1
+    path: Assets/Scenes/Level5 Attack.unity
+    guid: 1bfbc3735b5a9ea41b2941df1ad4fc24
+  - enabled: 1
     path: Assets/Scenes/YouWin.unity
     guid: bc4965ebd2ff3454e98afbd204af0ed5
   - enabled: 1

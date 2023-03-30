@@ -27,7 +27,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 443751557695383355}
   m_RootOrder: 0
@@ -85,7 +85,7 @@ Light:
   m_RenderingLayerMask: 1
   m_Lightmapping: 2
   m_LightShadowCasterMode: 0
-  m_AreaSize: {x: 2.63, y: 5.54}
+  m_AreaSize: {x: 2.63, y: 3.4639852}
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
@@ -122,8 +122,8 @@ Transform:
   m_GameObject: {fileID: 443751557695383353}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.39, y: -3.39, z: 0}
-  m_LocalScale: {x: 1.9525, y: 3.5853, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.46, y: 2.6809413, z: 0.7477593}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 443751556839527898}
   m_Father: {fileID: 0}

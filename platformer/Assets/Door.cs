@@ -25,9 +25,8 @@ public class Door : MonoBehaviour
         // if player collides with door, load next room?
         if (other.CompareTag("Player")) {
             Debug.Log("collision");
-            // SceneManager.LoadScene(1);
-            ranInt = SceneManager.GetActiveScene().buildIndex + 1;
-            SceneManager.LoadScene(ranInt);
+            // ranInt = SceneManager.GetActiveScene().buildIndex + 1;
+            // SceneManager.LoadScene(ranInt);
         }
     }
 

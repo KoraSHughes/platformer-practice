@@ -101,6 +101,13 @@ public class Player : MonoBehaviour
         movementControl();
     }
 
+    private void OnTriggerEnter(Collider other) {
+        // if player collides with reward, destroy reward
+        if (other.CompareTag("reward")) {
+            Destroy(other);
+        }
+    }
+
     private int check_for_wall(){
         // finds nearest wall and returns -1 if left of user, 0 if not close enough, and 1 if right of user
         if (walls.Length == 0){
