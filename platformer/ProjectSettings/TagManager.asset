@@ -8,6 +8,8 @@ TagManager:
   - platform
   - enemy
   - reward
+  - door
+  - killzone
   layers:
   - Default
   - TransparentFX

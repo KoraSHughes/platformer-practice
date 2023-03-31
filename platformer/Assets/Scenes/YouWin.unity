@@ -226,6 +226,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7330605743444714853, guid: 93250d59c64f9d14fa42620e3125cf4a, type: 3}
+      propertyPath: animation
+      value: 
+      objectReference: {fileID: 728812160}
     - target: {fileID: 7330605745001358417, guid: 93250d59c64f9d14fa42620e3125cf4a, type: 3}
       propertyPath: m_Name
       value: Replay Button
@@ -309,6 +313,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 39c232f011b25f241994bf2e07671ee8, type: 3}
+--- !u!95 &728812160 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8331468572653716970, guid: 39c232f011b25f241994bf2e07671ee8, type: 3}
+  m_PrefabInstance: {fileID: 565185872}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1341309985
 GameObject:
   m_ObjectHideFlags: 0

@@ -87,11 +87,6 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 1
-  left: {fileID: 8164347837975931537}
-  right: {fileID: 3253156800284931856}
-  whatIsWall:
-    serializedVersion: 2
-    m_Bits: 128
   defNumDbJumps: 1
   defNumWallJumps: 1
   defNumDashes: 1

@@ -1523,6 +1523,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bgImage: {fileID: 1520531432}
   levelText: {fileID: 1520531431}
+  totalRewards: 5
 --- !u!1 &1215811135
 GameObject:
   m_ObjectHideFlags: 0
