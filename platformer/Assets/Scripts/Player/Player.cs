@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour
 {
 #region variables
@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     GameManager _gameManager;
     Rigidbody2D _rigidbody2D;
 
+    private Vector2 playerPosition;
     public enum state{  // TODO: attach sprites to states
         idle,
             // attacking,
@@ -52,10 +53,9 @@ public class Player : MonoBehaviour
     {
         _gameManager = GameObject.FindObjectOfType<GameManager>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
-
         dbleJumps = defNumDbJumps;
         wallJumps = defNumWallJumps;
-
+        playerPosition = GameObject.FindWithTag("Player").transform.position;
         walls = GameObject.FindGameObjectsWithTag("wall");
     }
 
@@ -89,23 +89,38 @@ public class Player : MonoBehaviour
         _rigidbody2D.angularVelocity = 0f; // TODO: make sure obj doesnt rotate
     #endregion
 
-        Debug.Log("Player State: " + playerState.ToString()
-                  + ", Facing: " + facing.ToString()
-                  + ", Jumps: "+ (dbleJumps, wallJumps).ToString()
-                + ", Attacking: " + isAttacking.ToString()
-                // + ", Grounded|Still?" + (is_grounded, is_still()).ToString()
-                  + ", Dash CD: " + dashCooldown.ToString()
-                  + ", Jump CD: " + jumpCooldown.ToString()
-                  + ", WallDir?: " + check_for_wall().ToString());
+        // Debug.Log("Player State: " + playerState.ToString()
+        //           + ", Facing: " + facing.ToString()
+        //           + ", Jumps: "+ (dbleJumps, wallJumps).ToString()
+        //         + ", Attacking: " + isAttacking.ToString()
+        //         // + ", Grounded|Still?" + (is_grounded, is_still()).ToString()
+        //           + ", Dash CD: " + dashCooldown.ToString()
+        //           + ", Jump CD: " + jumpCooldown.ToString()
+        //           + ", WallDir?: " + check_for_wall().ToString());
 
         movementControl();
+
+        if (transform.position.y < -10) {
+            transform.position = playerPosition;
+        }
     }
 
-    private void OnTriggerEnter(Collider other) {
+    private void OnTriggerEnter2D(Collider2D other) {
         // if player collides with reward, destroy reward
         if (other.CompareTag("reward")) {
+            // print("reward");
             Debug.Log("REWARD");
-            Destroy(other);
+            _gameManager.GetComponent<GameManager>().RewardInc();
+            Destroy(other.gameObject);   
+        }
+        else if (other.CompareTag("door")) {
+            if (PublicVars.nextLevel) {
+                SceneManager.LoadScene("Level2 Dash");
+            }
+        }
+        else if (other.CompareTag("killzone")) {
+            print("killzone");
+            transform.position = playerPosition;
         }
     }
 

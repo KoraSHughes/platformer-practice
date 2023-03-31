@@ -1607,6 +1607,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bgImage: {fileID: 230019458}
   levelText: {fileID: 230019457}
+  totalRewards: 4
 --- !u!1001 &1154187979
 PrefabInstance:
   m_ObjectHideFlags: 0

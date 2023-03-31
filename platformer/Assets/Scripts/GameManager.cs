@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
 
     int buildIndex;
 
+    public int totalRewards;
+    int rewardsObtained;
 
     // Start is called before the first frame update
     void Start()
@@ -39,7 +41,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void PlayGame() {
@@ -75,5 +77,12 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(5f);
         levelText.text = "";
         bgImage.enabled = false;
+    }
+
+    public void RewardInc() {
+        rewardsObtained += 1;
+        if (rewardsObtained == totalRewards) {
+            PublicVars.nextLevel = true;
+        }
     }
 }
