@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     int rewardsObtained;
     public static bool pause = false;
     public GameObject pauseUI;
+    private AudioSource reward;
     
     // Start is called before the first frame update
     void Start()
@@ -41,6 +42,11 @@ public class GameManager : MonoBehaviour
         buildIndex = SceneManager.GetActiveScene().buildIndex;
         // call coroutine
         StartCoroutine(ShowTutorial());
+
+        reward = GetComponent<AudioSource>();
+        if (reward == null){
+            Debug.Log("Add Reward Audio to Game Manager!");
+        }
     }
 
     // Update is called once per frame
@@ -93,6 +99,7 @@ public class GameManager : MonoBehaviour
 
     public void RewardInc() {
         rewardsObtained += 1;
+        reward.Play();
         if (rewardsObtained == totalRewards) {
             PublicVars.nextLevel = true;
         }
