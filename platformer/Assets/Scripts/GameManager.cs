@@ -23,7 +23,9 @@ public class GameManager : MonoBehaviour
 
     public int totalRewards;
     int rewardsObtained;
-
+    public static bool pause = false;
+    public GameObject pauseUI;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +34,9 @@ public class GameManager : MonoBehaviour
         doubleJump = "Press SPACE while in the air to double jump";
         wallJump = "When jumping on a wall,\npress SPACE to jump over it";
         attack = "Press the Left Mouse Button to attack the enemy";
+
+        pauseUI.SetActive(false);
+
         // get build index to use to determine which message to show
         buildIndex = SceneManager.GetActiveScene().buildIndex;
         // call coroutine
@@ -41,7 +46,14 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            if (pause) {
+                Resume();
+            }
+            else {
+                Pause();
+            }
+        }
     }
 
     public void PlayGame() {
@@ -84,5 +96,17 @@ public class GameManager : MonoBehaviour
         if (rewardsObtained == totalRewards) {
             PublicVars.nextLevel = true;
         }
+    }
+
+    public void Resume() {
+        pauseUI.SetActive(false);
+        Time.timeScale = 1f;
+        pause = false;
+    }
+    
+    public void Pause() {
+        pauseUI.SetActive(true);
+        Time.timeScale = 0f;
+        pause = true;
     }
 }
