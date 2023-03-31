@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-public class Player : MonoBehaviour
+public class testPlayer : MonoBehaviour
 {
 #region variables
     public PlayerData _playerData;
@@ -243,18 +243,33 @@ public class Player : MonoBehaviour
     }
 
 #region movement
-    void walk(float xMove, bool isAirborn = false) {
+    void walk(float lerpAmount) {
+        playerState = state.walking;
         facing = (xMove >= 0) ? 1 : -1;
+        float targetSpeed = _moveInput.x * Data.walkMaxSpeed;
+
+        targetSpeed = Mathf.Lerp(RB.velocity.x, targetSpeed, lerpAmount);
+
+        
+		float accelRate;
+
+		if (LastOnGroundTime > 0)
+			accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ?
+                Data.runAccelAmount : Data.runDeccelAmount;
+		else
+			accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ?
+                Data.runAccelAmount * Data.accelInAir
+                : Data.runDeccelAmount * Data.deccelInAir;
+
         if (isAirborn == true){
             float addV = (_rigidbody2D.velocity.x*facing < walkSpeed) ? xMove*walkSpeed*0.007f : 0f;
             // Note: we use dashDist here bc thats the fastest we want the user to be able to go in 
             _rigidbody2D.velocity += new Vector2(addV, 0);
-            playerState = state.walking;
         }
         else{
             _rigidbody2D.velocity = new Vector2(xMove*walkSpeed/2, _rigidbody2D.velocity.y);
             // Note: we move slower horizontally in the air
-            playerState = state.walking;
+            
         }
     }
 

@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Player Data")]
 public class PlayerData : ScriptableObject
 {
-    /* 
+
 	[Header("Gravity")]
 	[HideInInspector] public float gravityStrength;
 	[HideInInspector] public float gravityScale;
@@ -18,7 +18,7 @@ public class PlayerData : ScriptableObject
 	public float walkMaxSpeed; //Target speed we want the player to reach.
 	public float walkAccel; //The speed at which our player accelerates to max speed, can be set to runMaxSpeed for instant acceleration down to 0 for none at all
 	[HideInInspector] public float walkAccelForce; //The actual force (multiplied with speedDiff) applied to the player.
-	public float walkDecceleration; //The speed at which our player decelerates from their current speed, can be set to runMaxSpeed for instant deceleration down to 0 for none at all
+	public float walkDeccel; //The speed at which our player decelerates from their current speed, can be set to runMaxSpeed for instant deceleration down to 0 for none at all
 	[HideInInspector] public float walkDeccelForce; //Actual force (multiplied with speedDiff) applied to the player .
 	[Space(5)]
 	[Range(0f, 1)] public float accelInAir; //Multipliers applied to acceleration rate when airborne.
@@ -68,14 +68,14 @@ public class PlayerData : ScriptableObject
 		gravityScale = gravityStrength / Physics2D.gravity.y;
 
 		//Calculate are run acceleration & deceleration forces using formula: amount = ((1 / Time.fixedDeltaTime) * acceleration) / runMaxSpeed
-		walkAccelAmount = (walkAcceleration * 50) / walkMaxSpeed;
-		walkDeccelAmount = (walkDecceleration * 50) / walkMaxSpeed;
+		walkAccelForce = (walkAccel * 50) / walkMaxSpeed;
+		walkDeccelForce = (walkDeccel * 50) / walkMaxSpeed;
 
 		//Calculate jumpForce using the formula (initialJumpVelocity = gravity * timeToJumpApex)
 		jumpForce = Mathf.Abs(gravityStrength) * jumpTimeToApex;
 
-		runAcceleration = Mathf.Clamp(runAcceleration, 0.01f, runMaxSpeed);
-		runDecceleration = Mathf.Clamp(runDecceleration, 0.01f, runMaxSpeed);
+		walkAccel = Mathf.Clamp(walkAccel, 0.01f, walkMaxSpeed);
+		walkDeccel = Mathf.Clamp(walkDeccel, 0.01f, walkMaxSpeed);
 	}
-*/
+
 }
