@@ -249,7 +249,7 @@ public class Player : MonoBehaviour
     void walk(float xMove, bool isAirborn = false) {
         facing = (xMove >= 0) ? 1 : -1;
         if (isAirborn == true){
-            float addV = (_rigidbody2D.velocity.x*facing < walkSpeed) ? xMove*walkSpeed*0.007f : 0f;
+            float addV = (_rigidbody2D.velocity.x*facing < walkSpeed*.75f) ? xMove*walkSpeed*0.007f : 0f;
             // Note: we use dashDist here bc thats the fastest we want the user to be able to go in 
             _rigidbody2D.velocity += new Vector2(addV, 0);
             playerState = state.walking;

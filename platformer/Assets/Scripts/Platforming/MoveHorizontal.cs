@@ -18,7 +18,7 @@ public class MoveHorizontal : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        newPos.x = startPos.x + (distance * Mathf.Sin(Time.time * speed));
+        newPos.x = startPos.x + (distance * Mathf.Sin(Time.time * speed)); // Math.pingpong?
         transform.position = newPos;
     }
 }
