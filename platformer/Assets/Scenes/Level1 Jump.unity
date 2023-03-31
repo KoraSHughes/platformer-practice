@@ -2354,12 +2354,20 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2904303159837965360, guid: 1612ab9775ad54a8dafe8c15ed8b5e22, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2904303159837965360, guid: 1612ab9775ad54a8dafe8c15ed8b5e22, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2904303159837965360, guid: 1612ab9775ad54a8dafe8c15ed8b5e22, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -11.610001
+      value: -15.772
       objectReference: {fileID: 0}
     - target: {fileID: 2904303159837965360, guid: 1612ab9775ad54a8dafe8c15ed8b5e22, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -9.25293
+      value: -9.048
       objectReference: {fileID: 0}
     - target: {fileID: 2904303159837965360, guid: 1612ab9775ad54a8dafe8c15ed8b5e22, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2393,6 +2401,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2904303159837965360, guid: 1612ab9775ad54a8dafe8c15ed8b5e22, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3253156800284931856, guid: 1612ab9775ad54a8dafe8c15ed8b5e22, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -2408,6 +2420,18 @@ PrefabInstance:
     - target: {fileID: 6437098096582027265, guid: 1612ab9775ad54a8dafe8c15ed8b5e22, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6437098096833334497, guid: 1612ab9775ad54a8dafe8c15ed8b5e22, type: 3}
+      propertyPath: m_Size.x
+      value: 0.6754112
+      objectReference: {fileID: 0}
+    - target: {fileID: 6437098096833334497, guid: 1612ab9775ad54a8dafe8c15ed8b5e22, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6437098096833334497, guid: 1612ab9775ad54a8dafe8c15ed8b5e22, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.00477314
       objectReference: {fileID: 0}
     - target: {fileID: 6437098096833334498, guid: 1612ab9775ad54a8dafe8c15ed8b5e22, type: 3}
       propertyPath: rewards
