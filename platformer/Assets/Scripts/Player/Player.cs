@@ -278,10 +278,10 @@ public class Player : MonoBehaviour
         }
         
         if(is_grounded) {
-            dashCooldown += 1.5f;
+            dashCooldown += 1.2f;
         }
         else {
-            dashCooldown += 2f;
+            dashCooldown += 1.6f;
         }
         
         playerState = state.dashing;
