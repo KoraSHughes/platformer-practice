@@ -39,8 +39,8 @@ public class Player : MonoBehaviour
 
     float walkSpeed = 4f;
     float dashDist = 7f;
-    float jumpHeight = 4f;
-    float dbJumpHeight = 3f;
+    float jumpHeight = 5.5f;
+    float dbJumpHeight = 4.5f;
 
     bool isAttacking = false;
     int dbleJumps;
@@ -174,7 +174,7 @@ public class Player : MonoBehaviour
             dbleJumps = defNumDbJumps;
             wallJumps = defNumWallJumps;
 
-            if (Input.GetButton("Fire3") && dashCooldown == 0) {  // dashing = Shift | Xbox B (button1)
+            if (Input.GetButton("Dash") && dashCooldown == 0) {  // dashing = Shift | Xbox B (button1)
                 dash();
             }
             else if (wantsJump && jumpCooldown == 0) { // jumping
