@@ -3135,6 +3135,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: player
       objectReference: {fileID: 0}
+    - target: {fileID: 6437098096833334498, guid: 1612ab9775ad54a8dafe8c15ed8b5e22, type: 3}
+      propertyPath: defNumDashes
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6437098096833334498, guid: 1612ab9775ad54a8dafe8c15ed8b5e22, type: 3}
+      propertyPath: defNumDbJumps
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6437098096833334498, guid: 1612ab9775ad54a8dafe8c15ed8b5e22, type: 3}
+      propertyPath: defNumWallJumps
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1612ab9775ad54a8dafe8c15ed8b5e22, type: 3}
 --- !u!1001 &1933060636
