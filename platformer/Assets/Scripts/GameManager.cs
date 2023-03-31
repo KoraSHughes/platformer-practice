@@ -30,10 +30,10 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         walkJump = "Press A/LEFT to go left\nPress D/RIGHT to go right\nPress SPACE to jump";
-        dash = "Press SHIFT+A or SHIFT+D to dash";
+        dash = "Hold SHIFT to dash";
         doubleJump = "Press SPACE while in the air to double jump";
         wallJump = "When jumping on a wall,\npress SPACE to jump over it";
-        attack = "Press the Left Mouse Button to attack the enemy";
+        attack = "Press LMB to attack the enemy";
 
         pauseUI.SetActive(false);
 

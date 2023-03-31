@@ -1,27 +1,27 @@
-// using System.Collections;
-// using System.Collections.Generic;
-// using UnityEngine;
-// using UnityEngine.SceneManagement;
-// public class testPlayer : MonoBehaviour
-// {
-// #region variables
-//     public PlayerData _playerData;
-//     GameManager _gameManager;
-//     Rigidbody2D _rigidbody2D;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+public class testPlayer : MonoBehaviour
+{
+/* #region variables
+    public PlayerData _playerData;
+    GameManager _gameManager;
+    Rigidbody2D _rigidbody2D;
 
-//     private Vector2 playerPosition;
-//     public enum state{  // TODO: attach sprites to states
-//         idle,
-//             // attacking,
-//         walking,
-//             // walkAttacking,
-//         jumping,  // Note: anything past this counts as jumping (index: 3)
-//                 //jumpWalking,  // TODO: implement falling
-//             dashing,
-//             dbJumping,
-//         wallSliding,
-//             wallJumping
-//     }
+    private Vector2 playerPosition;
+    public enum state{  // TODO: attach sprites to states
+        idle,
+            // attacking,
+        walking,
+            // walkAttacking,
+        jumping,  // Note: anything past this counts as jumping (index: 3)
+                //jumpWalking,  // TODO: implement falling
+            dashing,
+            dbJumping,
+        wallSliding,
+            wallJumping
+    }
     
 //     state playerState = state.idle;
 
@@ -298,50 +298,51 @@
 //             dashCooldown += 2f;
 //         }
         
-//         playerState = state.dashing;
-//     }
+        playerState = state.dashing;
+    }
 
-//     void doubleJump() {
-//         if (_rigidbody2D.velocity.y > dbJumpHeight){
-//             _rigidbody2D.velocity += new Vector2(0, dbJumpHeight);
-//         }
-//         else{  // cancel current momentum if we aren't going up
-//             _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, dbJumpHeight);
-//         }
-//         playerState = state.dbJumping;
-//         dbleJumps -= 1;
-//         jumpCooldown += 0.6f;
-//     }
+    void doubleJump() {
+        if (_rigidbody2D.velocity.y > dbJumpHeight){
+            _rigidbody2D.velocity += new Vector2(0, dbJumpHeight);
+        }
+        else{  // cancel current momentum if we aren't going up
+            _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, dbJumpHeight);
+        }
+        playerState = state.dbJumping;
+        dbleJumps -= 1;
+        jumpCooldown += 0.6f;
+    }
 
-//     void wallJump(int wallDir) {
-//         playerState = state.wallJumping;
-//         _rigidbody2D.velocity = new Vector2(-wallDir*walkSpeed/1.5f, dbJumpHeight*1.5f);
-//         wallJumps -= 1;
-//         jumpCooldown += 0.6f;
-//         facing *= -1; // switch facing directions
-//         // dbleJumps += 1;
-//         // dashCooldown = 0;
-//     }
+    void wallJump(int wallDir) {
+        playerState = state.wallJumping;
+        _rigidbody2D.velocity = new Vector2(-wallDir*walkSpeed/1.5f, dbJumpHeight*1.5f);
+        wallJumps -= 1;
+        jumpCooldown += 0.6f;
+        facing *= -1; // switch facing directions
+        // dbleJumps += 1;
+        // dashCooldown = 0;
+    }
 
-//     void wallSlide(bool slowly){
-//         // TODO: implement user sliding down a wall
-//         playerState = state.wallSliding;
-//         if (slowly){
-//             _rigidbody2D.velocity = new Vector2(0, -0.1f); // move down wall slower when moving toward wall
-//         }
-//         else{
-//             _rigidbody2D.velocity = new Vector2(0, -0.5f);
-//         }
-//     }
-// #endregion
+    void wallSlide(bool slowly){
+        // TODO: implement user sliding down a wall
+        playerState = state.wallSliding;
+        if (slowly){
+            _rigidbody2D.velocity = new Vector2(0, -0.1f); // move down wall slower when moving toward wall
+        }
+        else{
+            _rigidbody2D.velocity = new Vector2(0, -0.5f);
+        }
+    }
+    #endregion
 
-//     //attack works both in air and on ground, and with pogoing
-//     void attack() {
+    //attack works both in air and on ground, and with pogoing
+    void attack() {
 
-//         //float speedDif = Data.targetSpeed - _rigidbody2D.velocity.x;
-//         //float movement = speedDif * accelRate;
-//         //_rigidbody2D.AddForce(movement * Vector2.right, ForceMode2D.Force); //knockback, will come back to fix
-//         //Instantiate actual atk that does damage, going sideways
-//         //playerState = state.attacking;
-//     }
-// }
+        //float speedDif = Data.targetSpeed - _rigidbody2D.velocity.x;
+        //float movement = speedDif * accelRate;
+        //_rigidbody2D.AddForce(movement * Vector2.right, ForceMode2D.Force); //knockback, will come back to fix
+        //Instantiate actual atk that does damage, going sideways
+        //playerState = state.attacking;
+    } */
+}
+
