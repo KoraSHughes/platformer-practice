@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class testPlayer : MonoBehaviour
 {
-#region variables
+/* #region variables
     public PlayerData _playerData;
     GameManager _gameManager;
     Rigidbody2D _rigidbody2D;
@@ -333,7 +333,7 @@ public class testPlayer : MonoBehaviour
             _rigidbody2D.velocity = new Vector2(0, -0.5f);
         }
     }
-#endregion
+    #endregion
 
     //attack works both in air and on ground, and with pogoing
     void attack() {
@@ -343,5 +343,5 @@ public class testPlayer : MonoBehaviour
         //_rigidbody2D.AddForce(movement * Vector2.right, ForceMode2D.Force); //knockback, will come back to fix
         //Instantiate actual atk that does damage, going sideways
         //playerState = state.attacking;
-    }
+    } */
 }
