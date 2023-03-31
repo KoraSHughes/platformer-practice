@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     GameManager _gameManager;
     Rigidbody2D _rigidbody2D;
 
+    int level;
     private Vector2 playerPosition;
     public enum state{  // TODO: attach sprites to states
         idle,
@@ -104,7 +105,7 @@ public class Player : MonoBehaviour
             transform.position = playerPosition;
         }
 
-        Debug.Log("Player State: " + playerState.ToString() + "\n");
+        // Debug.Log("Player State: " + playerState.ToString() + "\n");
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
@@ -116,8 +117,10 @@ public class Player : MonoBehaviour
             Destroy(other.gameObject);   
         }
         else if (other.CompareTag("door")) {
+            print("door");
             if (PublicVars.nextLevel) {
-                SceneManager.LoadScene("Level2 Dash");
+                level = SceneManager.GetActiveScene().buildIndex + 1;
+                SceneManager.LoadScene(level);
             }
         }
         else if (other.CompareTag("killzone")) {
