@@ -90,22 +90,20 @@ public class Player : MonoBehaviour
         _rigidbody2D.angularVelocity = 0f; // TODO: make sure obj doesnt rotate
     #endregion
 
-        // Debug.Log("Player State: " + playerState.ToString()
-        //           + ", Facing: " + facing.ToString()
-        //           + ", Jumps: "+ (dbleJumps, wallJumps).ToString()
-        //         + ", Attacking: " + isAttacking.ToString()
-        //         // + ", Grounded|Still?" + (is_grounded, is_still()).ToString()
-        //           + ", Dash CD: " + dashCooldown.ToString()
-        //           + ", Jump CD: " + jumpCooldown.ToString()
-        //           + ", WallDir?: " + check_for_wall().ToString());
+        Debug.Log("Player State: " + playerState.ToString()
+                  + ", Facing: " + facing.ToString()
+                  + ", Jumps: "+ (dbleJumps, wallJumps).ToString()
+                + ", Attacking: " + isAttacking.ToString()
+                // + ", Grounded|Still?" + (is_grounded, is_still()).ToString()
+                  + ", Dash CD: " + dashCooldown.ToString()
+                  + ", Jump CD: " + jumpCooldown.ToString()
+                  + ", WallDir?: " + check_for_wall().ToString());
 
         movementControl();
 
         if (transform.position.y < -10) {
             transform.position = playerPosition;
         }
-
-        // Debug.Log("Player State: " + playerState.ToString() + "\n");
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
@@ -249,7 +247,7 @@ public class Player : MonoBehaviour
     void walk(float xMove, bool isAirborn = false) {
         facing = (xMove >= 0) ? 1 : -1;
         if (isAirborn == true){
-            float addV = (_rigidbody2D.velocity.x*facing < walkSpeed*.75f) ? xMove*walkSpeed*0.007f : 0f;
+            float addV = (_rigidbody2D.velocity.x*facing < walkSpeed*.5f) ? xMove*walkSpeed*0.007f : 0f;
             // Note: we use dashDist here bc thats the fastest we want the user to be able to go in 
             _rigidbody2D.velocity += new Vector2(addV, 0);
             playerState = state.walking;
