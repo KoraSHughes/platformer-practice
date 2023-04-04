@@ -180,8 +180,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6909138943874831978, guid: 26248205a4eef1c488b349075141808e, type: 3}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+      - m_Target: {fileID: 7330605743444714853, guid: 93250d59c64f9d14fa42620e3125cf4a, type: 3}
+        m_TargetAssemblyTypeName: Buttons, Assembly-CSharp
         m_MethodName: QuitGame
         m_Mode: 1
         m_Arguments:
