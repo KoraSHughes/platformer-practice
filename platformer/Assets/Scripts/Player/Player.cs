@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     public PlayerData _playerData;
     GameManager _gameManager;
     Rigidbody2D _rigidbody2D;
+    Animator _animator;
 
     AudioSource audioPlayer;
     public AudioClip clipJump;
@@ -62,11 +63,14 @@ public class Player : MonoBehaviour
     {
         _gameManager = GameObject.FindObjectOfType<GameManager>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
+
+        playerPosition = GameObject.FindWithTag("Player").transform.position;
+        walls = GameObject.FindGameObjectsWithTag("wall");
+
         dbleJumps = defNumDbJumps;
         wallJumps = defNumWallJumps;
         dashes = defNumDashes;
-        playerPosition = GameObject.FindWithTag("Player").transform.position;
-        walls = GameObject.FindGameObjectsWithTag("wall");
 
         // soundJump.clip = clipJump;  // add sounds to audio listener objects to be played
         // soundAttack.clip = clipAttack;
