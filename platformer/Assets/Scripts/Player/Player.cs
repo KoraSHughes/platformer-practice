@@ -155,6 +155,7 @@ public class Player : MonoBehaviour
         else if (other.CompareTag("killzone")) {
             print("killzone");
             transform.position = playerPosition;
+            StartCoroutine(_gameManager.GetComponent<GameManager>().ShowTutorial());
         }
     }
 
