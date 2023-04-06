@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     // display corresponding info (tutorial) for the abilities player has
 
     public  UnityEngine.UI.RawImage bgImage;
-    public TextMeshProUGUI levelText;
+    public TextMeshProUGUI levelText, scoreUI, crystalsUI;
 
     // messages for tutorials
     string walkJump;
@@ -21,11 +21,22 @@ public class GameManager : MonoBehaviour
 
     int buildIndex;
 
-    public int totalRewards;
-    int rewardsObtained;
+    int crystalsObtained;
     public static bool pause = false;
+
+    private int score = 0;
     public GameObject pauseUI;
+    private int crystalsNeeded;
     private AudioSource reward;
+
+    private void Awake() {
+    if (GameObject.FindObjectsOfType<GameManager>().Length > 1) {
+        Destroy(gameObject);
+    }
+    else {
+        DontDestroyOnLoad(gameObject);
+        }
+    }
     
     // Start is called before the first frame update
     void Start()
@@ -43,6 +54,11 @@ public class GameManager : MonoBehaviour
         // call coroutine
         StartCoroutine(ShowTutorial());
 
+        SetNeededCrystals();
+
+        scoreUI.text = "SCORE: " + score;
+        crystalsUI.text = "CRYSTALS: " + crystalsObtained + "/" + crystalsNeeded;
+
         reward = GetComponent<AudioSource>();
         if (reward == null){
             Debug.Log("Add Reward Audio to Game Manager!");
@@ -52,6 +68,18 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        SetNeededCrystals();
+
+        if (scoreUI == null) {
+            scoreUI = GameObject.FindGameObjectWithTag("ScoreUI").GetComponent<TextMeshProUGUI>();
+            scoreUI.text = "SCORE: " + score;
+        }
+        
+        if (crystalsUI == null) {
+            crystalsUI = GameObject.FindGameObjectWithTag("CrystalUI").GetComponent<TextMeshProUGUI>();
+            crystalsUI.text = "CRYSTALS: " + crystalsObtained + "/" + crystalsNeeded;
+        }
+
         if (Input.GetKeyDown(KeyCode.Escape)) {
             if (pause) {
                 Resume();
@@ -98,9 +126,12 @@ public class GameManager : MonoBehaviour
     }
 
     public void RewardInc() {
-        rewardsObtained += 1;
+        crystalsObtained += 1;
         reward.Play();
-        if (rewardsObtained == totalRewards) {
+        score += 10;
+        scoreUI.text = "SCORE: " + score;
+        crystalsUI.text = "CRYSTALS: " + crystalsObtained + "/" + crystalsNeeded;
+        if (crystalsObtained == crystalsNeeded) {
             PublicVars.nextLevel = true;
         }
     }
@@ -116,4 +147,28 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
         pause = true;
     }
+
+    public void ZeroObtainedCrystals() {
+        crystalsObtained = 0;
+    }
+
+    public void SetNeededCrystals() {
+        string scene = SceneManager.GetActiveScene().name;
+        if (scene == "Level1 Jump") {
+            crystalsNeeded = 2;
+        }
+        else if (scene == "Level2 Dash") {
+            crystalsNeeded = 3;
+        }
+        else if (scene == "Level3 Double") {
+            crystalsNeeded = 5;
+        }
+        else if (scene == "Level4 WallJump") {
+            crystalsNeeded = 3;
+        }
+        else if (scene == "Level5 Attack") {
+            crystalsNeeded = 4;
+        }
+    }
+    
 }
