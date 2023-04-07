@@ -103,13 +103,13 @@ public class Player : MonoBehaviour
     void Update()
     {
         is_grounded = Physics2D.OverlapCircle(feet.transform.position, .1f, whatIsGround);
-        
     #region cooldowns
         if (dashCooldown > 0){
             dashCooldown -= Time.deltaTime;
         }
         else{
             dashCooldown = 0f;  // safety in case time subtracts more than necessary
+            _animator.ResetTrigger("Dash");
         }
 
         if (jumpCooldown > 0){
@@ -117,6 +117,8 @@ public class Player : MonoBehaviour
         }
         else{
             jumpCooldown = 0;
+            _animator.ResetTrigger("DbJump");
+            _animator.ResetTrigger("WallJump");
         }
 
         _rigidbody2D.angularVelocity = 0f; // TODO: make sure obj doesnt rotate
@@ -128,8 +130,8 @@ public class Player : MonoBehaviour
                 + ", Attacking: " + isAttacking.ToString()
                 // + ", Grounded|Still?" + (is_grounded, is_still()).ToString()
                   + ", Dash CD: " + dashCooldown.ToString()
-                  + ", Jump CD: " + jumpCooldown.ToString()
-                  + ", WallDir?: " + check_for_wall().ToString());
+                  + ", Jump CD: " + jumpCooldown.ToString());
+                //   + ", WallDir?: " + check_for_wall().ToString());
 
         movementControl();
     }
@@ -200,12 +202,12 @@ public class Player : MonoBehaviour
         bool wantsJump = Input.GetKey(KeyCode.Space) || Input.GetButton("XJump"); // jumping = space bar | Xbox A (button0)
         float xMove = Input.GetAxis("Horizontal");
 
-        //_animator.SetFloat("Walk", xMove);
-
         if (is_grounded){  // on the ground
             dbleJumps = defNumDbJumps;
             wallJumps = defNumWallJumps;
             dashes = defNumDashes;
+            _animator.SetBool("Jump", false);
+            _animator.SetBool("WallSlide", false);
 
             if (Input.GetButton("Dash") && dashCooldown == 0) {  // dashing = Shift | Xbox B (button1)
                 dash();
@@ -219,8 +221,14 @@ public class Player : MonoBehaviour
             else{
                 if (is_still()){
                     playerState = state.idle; // player idle
+                    _animator.SetBool("Idle", true);
+                    // _animator.SetBool("Walk", false);
+                    _animator.SetFloat("Walk", 0f);
                 }
                 else{
+                    _animator.SetFloat("Walk", Mathf.Abs(_rigidbody2D.velocity.x));
+                    // _animator.SetBool("Walk", true);
+                    _animator.SetBool("Idle", false);
                     playerState = state.walking;
                 }
             }
@@ -234,6 +242,8 @@ public class Player : MonoBehaviour
             }
 
             if (playerState == state.wallSliding){  // currently sliding on a wall
+                _animator.SetBool("Jump", false);
+                _animator.SetBool("WallSlide", true);
                 if(Input.GetButton("Fire3") && dashCooldown == 0){  // dashing
                     dash(-wallDir);  // can only dash opposite to wall (-facing)?
                 }
@@ -248,6 +258,8 @@ public class Player : MonoBehaviour
                 }
             }
             else{
+                _animator.SetBool("Jump", true);
+                _animator.SetBool("WallSlide", false);
                 if(Input.GetButton("Dash") && dashCooldown == 0 && dashes > 0){  // dashing = Shift | Xbox B (button1)
                     dash();
                 }
@@ -258,6 +270,8 @@ public class Player : MonoBehaviour
                     walk(xMove, true);
                 }
                 else{
+                    _animator.SetFloat("Walk", 0f);
+                    // _animator.SetBool("Walk", false);
                     playerState = state.jumping;
                 }
             }
@@ -280,8 +294,6 @@ public class Player : MonoBehaviour
 
 #region movement
     void walk(float xMove, bool isAirborn = false) {
-        _animator.SetTrigger("Walk");
-        
         audioPlayer.PlayOneShot(clipWalk, 0.02f);
         facing = (xMove >= 0) ? 1 : -1;
         if (isAirborn == true){
@@ -295,11 +307,11 @@ public class Player : MonoBehaviour
             // Note: we move slower horizontally in the air
             playerState = state.walking;
         }
+        _animator.SetFloat("Walk", Mathf.Abs(_rigidbody2D.velocity.x));
     }
 
     void jump() {
-        _animator.SetTrigger("Jump");
-
+        _animator.SetBool("Jump", true);
         audioPlayer.PlayOneShot(clipJump, 0.015f);
         if(is_grounded) {
             playerState = state.jumping;
@@ -360,7 +372,7 @@ public class Player : MonoBehaviour
     }
 
     void wallSlide(bool slowly){
-        _animator.SetTrigger("WallSlide");
+       _animator.SetBool("WallSlide", true);
 
         // TODO: implement user sliding down a wall
         audioPlayer.PlayOneShot(clipSlide, 0.015f);
