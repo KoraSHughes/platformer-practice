@@ -54,7 +54,7 @@ public class Player : MonoBehaviour
 
     float walkSpeed = 4f;
     float dashDist = 7f;
-    float jumpHeight = 5.5f;
+    float jumpHeight = 5.4f;
     float dbJumpHeight = 4.5f;
 
     bool isAttacking = false;
@@ -178,9 +178,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    private bool is_still(){  // not moving much
+    private bool is_still(bool alsoY = false){  // not moving much
         // Note: vertical stillness must be < descent speed on wall sliding
-        return _rigidbody2D.velocity.x <= 0.5f && _rigidbody2D.velocity.x >= -0.5f && _rigidbody2D.velocity.y <= 0.2f && _rigidbody2D.velocity.y >= -0.2f;
+        return Mathf.Abs(_rigidbody2D.velocity.x) <= 0.01f && ((alsoY) ? (Mathf.Abs(_rigidbody2D.velocity.y) <= 0.02f) : true);
     }
     
 
@@ -232,6 +232,7 @@ public class Player : MonoBehaviour
             }
         }
         else {  // mid-air
+            _animator.SetBool("Idle", false);
             int wallDir = check_for_wall();
             int moveDir = (xMove > 0) ? 1 : -1;
             if (wallDir != 0 && _rigidbody2D.velocity.y <= 0
@@ -292,7 +293,7 @@ public class Player : MonoBehaviour
 
 #region movement
     void walk(float xMove, bool isAirborn = false) {
-        // audioPlayer.PlayOneShot(clipWalk, volumeScale*2f);  // sounds off so taken out
+        audioPlayer.PlayOneShot(clipWalk, volumeScale*0.1f);  // sounds off so taken out
         facing = (xMove >= 0) ? 1 : -1;
         if (isAirborn == true){
             float addV = (_rigidbody2D.velocity.x*facing < walkSpeed*.5f) ? xMove*walkSpeed*0.007f : 0f;
@@ -305,12 +306,17 @@ public class Player : MonoBehaviour
             // Note: we move slower horizontally in the air
             playerState = state.walking;
         }
-        _animator.SetFloat("Walk", Mathf.Abs(_rigidbody2D.velocity.x));
+        
+        if (playerState != state.wallSliding){
+            _animator.SetFloat("Walk", Mathf.Abs(_rigidbody2D.velocity.x));
+        }
+        _animator.SetBool("Idle", false);
     }
 
     void jump() {
         _animator.SetBool("Jump", true);
-        audioPlayer.PlayOneShot(clipJump, volumeScale*1.5f);
+        _animator.SetBool("Idle", false);
+        audioPlayer.PlayOneShot(clipJump, volumeScale*4f);
         if(is_grounded) {
             playerState = state.jumping;
             _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, jumpHeight);
@@ -320,7 +326,7 @@ public class Player : MonoBehaviour
 
     void dash(int face_override = 0) {
         _animator.SetTrigger("Dash");
-
+        _animator.SetBool("Idle", false);
         //Note: we half our vertical velocity (better feel)
         audioPlayer.PlayOneShot(clipDash, volumeScale*1.5f);
         if (face_override == 0) {
@@ -343,8 +349,8 @@ public class Player : MonoBehaviour
 
     void doubleJump() {
         _animator.SetTrigger("DbJump");
-
-        audioPlayer.PlayOneShot(clipJump, volumeScale*1.5f);
+        _animator.SetBool("Idle", false);
+        audioPlayer.PlayOneShot(clipJump, volumeScale*4f);
         if (_rigidbody2D.velocity.y > dbJumpHeight){
             _rigidbody2D.velocity += new Vector2(0, dbJumpHeight);
         }
@@ -358,8 +364,8 @@ public class Player : MonoBehaviour
 
     void wallJump(int wallDir) {
         _animator.SetTrigger("WallJump");
-
-        audioPlayer.PlayOneShot(clipJump, volumeScale*1.5f);
+        _animator.SetBool("Idle", false);
+        audioPlayer.PlayOneShot(clipJump, volumeScale*4f);
         playerState = state.wallJumping;
         _rigidbody2D.velocity = new Vector2(-wallDir*walkSpeed/1.5f, dbJumpHeight*1.5f);
         wallJumps -= 1;
@@ -371,9 +377,9 @@ public class Player : MonoBehaviour
 
     void wallSlide(bool slowly){
        _animator.SetBool("WallSlide", true);
-
+        _animator.SetBool("Idle", false);
         // TODO: implement user sliding down a wall
-        audioPlayer.PlayOneShot(clipSlide, volumeScale*1.5f);
+        audioPlayer.PlayOneShot(clipSlide, volumeScale*0.5f);
         playerState = state.wallSliding;
         if (slowly){
             _rigidbody2D.velocity = new Vector2(0, -0.1f); // move down wall slower when moving toward wall
