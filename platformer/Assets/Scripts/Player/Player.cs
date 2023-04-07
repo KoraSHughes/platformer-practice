@@ -292,7 +292,7 @@ public class Player : MonoBehaviour
 
 #region movement
     void walk(float xMove, bool isAirborn = false) {
-        audioPlayer.PlayOneShot(clipWalk, volumeScale*2f);
+        // audioPlayer.PlayOneShot(clipWalk, volumeScale*2f);  // sounds off so taken out
         facing = (xMove >= 0) ? 1 : -1;
         if (isAirborn == true){
             float addV = (_rigidbody2D.velocity.x*facing < walkSpeed*.5f) ? xMove*walkSpeed*0.007f : 0f;
@@ -301,7 +301,7 @@ public class Player : MonoBehaviour
             playerState = state.walking;
         }
         else{
-            _rigidbody2D.velocity = new Vector2(xMove*walkSpeed/2, _rigidbody2D.velocity.y);
+            _rigidbody2D.velocity = new Vector2(xMove*walkSpeed/1.75f, _rigidbody2D.velocity.y);
             // Note: we move slower horizontally in the air
             playerState = state.walking;
         }
