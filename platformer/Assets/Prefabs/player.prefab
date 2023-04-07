@@ -219,7 +219,6 @@ MonoBehaviour:
   clipAttack: {fileID: 8300000, guid: 2ba6c1b8e17284f218f60f95ac71900b, type: 3}
   clipDash: {fileID: 8300000, guid: d845fa1e9292044e6b25c0aa69b6c535, type: 3}
   clipSlide: {fileID: 8300000, guid: 1823b5c961f874453aa6ecc963b2e7c5, type: 3}
-  clipDeath: {fileID: 8300000, guid: 577f5f8871d884da3be209face1ee777, type: 3}
   feet: {fileID: 6437098096582027265}
   whatIsGround:
     serializedVersion: 2
