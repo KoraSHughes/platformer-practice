@@ -14,6 +14,7 @@ TagManager:
   - CrystalUI
   - DashSlider
   - JumpSlider
+  - playerFeet
   layers:
   - Default
   - TransparentFX
