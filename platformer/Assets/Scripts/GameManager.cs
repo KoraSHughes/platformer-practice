@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         walkJump = "Press A/LEFT to go left\nPress D/RIGHT to go right\nPress SPACE to jump";
-        dash = "Hold SHIFT while jumping to dash";
+        dash = "Hold SHIFT + LEFT/RIGHT while jumping to dash";
         doubleJump = "Press SPACE two times to double jump";
         wallJump = "Press SPACE on the sides of walls\nto jump off of them";
         attack = "Put all your abilities to the test!";
