@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
 #region variables
@@ -17,9 +18,14 @@ public class Player : MonoBehaviour
     public AudioClip clipDash;
     public AudioClip clipSlide;
     public AudioClip clipDeath;
+    private float volumeScale = 0.9f;
 
     int level;
     private Vector2 startingPosition;
+
+    private Slider dashslider;
+    private Slider jumpslider;
+    
     public enum state{  // TODO: attach sprites to states
         idle,
             // attacking,
@@ -35,7 +41,7 @@ public class Player : MonoBehaviour
     
     state playerState = state.idle;
 
-    public GameObject feet;  // bottom of player, used to check if we are on the ground
+    GameObject feet;  // bottom of player, used to check if we are on the ground
     public LayerMask whatIsGround;
     GameObject[] walls;
 
@@ -48,7 +54,7 @@ public class Player : MonoBehaviour
 
     float walkSpeed = 4f;
     float dashDist = 7f;
-    float jumpHeight = 5.5f;
+    float jumpHeight = 5.4f;
     float dbJumpHeight = 4.5f;
 
     bool isAttacking = false;
@@ -68,28 +74,17 @@ public class Player : MonoBehaviour
 
         startingPosition = transform.position;
         walls = GameObject.FindGameObjectsWithTag("wall");
+        feet = GameObject.FindGameObjectWithTag("playerFeet");
 
         dbleJumps = defNumDbJumps;
         wallJumps = defNumWallJumps;
         dashes = defNumDashes;
 
-        // soundJump.clip = clipJump;  // add sounds to audio listener objects to be played
-        // soundAttack.clip = clipAttack;
-        // soundDash.clip = clipDash;
-        // soundSlide.clip = clipSlide;
-        // soundWalk.clip = clipWalk;
-        // soundJump.volume = 0.015f;  // editing default settings
-        // soundAttack.volume = 0.01f;
-        // soundDash.volume = 0.015f;
-        // soundSlide.volume = 0.015f;
-        // soundWalk.volume = 0.02f;
-        // soundJump.playOnAwake = false;
-        // soundAttack.playOnAwake = false;
-        // soundDash.playOnAwake = false;
-        // soundSlide.playOnAwake = false;
-        // soundWalk.playOnAwake = false;
+        dashslider = GameObject.FindGameObjectWithTag("DashSlider").GetComponent<Slider>();
+        jumpslider = GameObject.FindGameObjectWithTag("JumpSlider").GetComponent<Slider>();
+
         audioPlayer = GetComponent<AudioSource>();
-        audioPlayer.playOnAwake = false;
+        // audioPlayer.playOnAwake = false;
     }
 
     void FixedUpdate()
@@ -109,6 +104,7 @@ public class Player : MonoBehaviour
         }
         else{
             dashCooldown = 0f;  // safety in case time subtracts more than necessary
+            _animator.ResetTrigger("Dash");
         }
 
         if (jumpCooldown > 0){
@@ -116,8 +112,11 @@ public class Player : MonoBehaviour
         }
         else{
             jumpCooldown = 0;
+            _animator.ResetTrigger("DbJump");
+            _animator.ResetTrigger("WallJump");
         }
-
+        dashslider.value = (dashes > 0) ? 1.6f - dashCooldown : 0f;
+        jumpslider.value = (defNumDbJumps == dbleJumps || dbleJumps > 0) ? (0.6f - jumpCooldown) : 0f;
         _rigidbody2D.angularVelocity = 0f; // TODO: make sure obj doesnt rotate
     #endregion
 
@@ -128,11 +127,12 @@ public class Player : MonoBehaviour
                 // + ", Grounded|Still?" + (is_grounded, is_still()).ToString()
                   + ", Dash CD: " + dashCooldown.ToString()
                   + ", Jump CD: " + jumpCooldown.ToString()
-                  + ", Anim State: " + _animator.GetCurrentAnimatorStateInfo(6).ToString());
-                //   + ", WallDir?: " + check_for_wall().ToString());
+                  + ", WallDir?: " + check_for_wall().ToString());
 
         movementControl();
     }
+
+
 
     private void OnTriggerEnter2D(Collider2D other) {
         // if player collides with reward, destroy reward
@@ -148,13 +148,15 @@ public class Player : MonoBehaviour
                 _gameManager.GetComponent<GameManager>().ZeroObtainedCrystals();
                 level = SceneManager.GetActiveScene().buildIndex + 1;
                 SceneManager.LoadScene(level);
-                _gameManager.GetComponent<GameManager>().LoadTutorial();
+                if (level != 6) {
+                    _gameManager.GetComponent<GameManager>().LoadTutorial();
+                }
             }
         }
         else if (other.CompareTag("killzone")) {
             print("killzone");
             transform.position = startingPosition;
-            audioPlayer.PlayOneShot(clipDeath, 0.02f);
+            audioPlayer.PlayOneShot(clipDeath, volumeScale*7);
             StartCoroutine(_gameManager.GetComponent<GameManager>().ShowTutorial());
         }
     }
@@ -178,9 +180,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    private bool is_still(){  // not moving much
+    private bool is_still(bool alsoY = false){  // not moving much
         // Note: vertical stillness must be < descent speed on wall sliding
-        return _rigidbody2D.velocity.x <= 0.5f && _rigidbody2D.velocity.x >= -0.5f && _rigidbody2D.velocity.y <= 0.2f && _rigidbody2D.velocity.y >= -0.2f;
+        return Mathf.Abs(_rigidbody2D.velocity.x) <= 0.01f && ((alsoY) ? (Mathf.Abs(_rigidbody2D.velocity.y) <= 0.02f) : true);
     }
     
 
@@ -199,8 +201,6 @@ public class Player : MonoBehaviour
     void movementControl() {
         bool wantsJump = Input.GetKey(KeyCode.Space) || Input.GetButton("XJump"); // jumping = space bar | Xbox A (button0)
         float xMove = Input.GetAxis("Horizontal");
-
-        //_animator.SetFloat("Walk", xMove);
 
         if (is_grounded){  // on the ground
             dbleJumps = defNumDbJumps;
@@ -222,16 +222,19 @@ public class Player : MonoBehaviour
                 if (is_still()){
                     playerState = state.idle; // player idle
                     _animator.SetBool("Idle", true);
-                    _animator.SetBool("Walk", false);
+                    // _animator.SetBool("Walk", false);
+                    _animator.SetFloat("Walk", 0f);
                 }
                 else{
-                    _animator.SetBool("Walk", true);
+                    _animator.SetFloat("Walk", Mathf.Abs(_rigidbody2D.velocity.x));
+                    // _animator.SetBool("Walk", true);
                     _animator.SetBool("Idle", false);
                     playerState = state.walking;
                 }
             }
         }
         else {  // mid-air
+            _animator.SetBool("Idle", false);
             int wallDir = check_for_wall();
             int moveDir = (xMove > 0) ? 1 : -1;
             if (wallDir != 0 && _rigidbody2D.velocity.y <= 0
@@ -268,6 +271,8 @@ public class Player : MonoBehaviour
                     walk(xMove, true);
                 }
                 else{
+                    _animator.SetFloat("Walk", 0f);
+                    // _animator.SetBool("Walk", false);
                     playerState = state.jumping;
                 }
             }
@@ -290,9 +295,7 @@ public class Player : MonoBehaviour
 
 #region movement
     void walk(float xMove, bool isAirborn = false) {
-        _animator.SetBool("Walk", true);
-        
-        audioPlayer.PlayOneShot(clipWalk, 0.02f);
+        audioPlayer.PlayOneShot(clipWalk, volumeScale*0.02f);  // sounds off so taken out
         facing = (xMove >= 0) ? 1 : -1;
         if (isAirborn == true){
             float addV = (_rigidbody2D.velocity.x*facing < walkSpeed*.5f) ? xMove*walkSpeed*0.007f : 0f;
@@ -301,15 +304,21 @@ public class Player : MonoBehaviour
             playerState = state.walking;
         }
         else{
-            _rigidbody2D.velocity = new Vector2(xMove*walkSpeed/2, _rigidbody2D.velocity.y);
+            _rigidbody2D.velocity = new Vector2(xMove*walkSpeed/1.75f, _rigidbody2D.velocity.y);
             // Note: we move slower horizontally in the air
             playerState = state.walking;
         }
+        
+        if (playerState != state.wallSliding){
+            _animator.SetFloat("Walk", Mathf.Abs(_rigidbody2D.velocity.x));
+        }
+        _animator.SetBool("Idle", false);
     }
 
     void jump() {
         _animator.SetBool("Jump", true);
-        audioPlayer.PlayOneShot(clipJump, 0.015f);
+        _animator.SetBool("Idle", false);
+        audioPlayer.PlayOneShot(clipJump, volumeScale*12f);
         if(is_grounded) {
             playerState = state.jumping;
             _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, jumpHeight);
@@ -319,9 +328,9 @@ public class Player : MonoBehaviour
 
     void dash(int face_override = 0) {
         _animator.SetTrigger("Dash");
-
+        _animator.SetBool("Idle", false);
         //Note: we half our vertical velocity (better feel)
-        audioPlayer.PlayOneShot(clipDash, 0.015f);
+        audioPlayer.PlayOneShot(clipDash, volumeScale*10f);
         if (face_override == 0) {
             _rigidbody2D.velocity = new Vector2(dashDist*facing, _rigidbody2D.velocity.y/4);
         }
@@ -342,8 +351,8 @@ public class Player : MonoBehaviour
 
     void doubleJump() {
         _animator.SetTrigger("DbJump");
-
-        audioPlayer.PlayOneShot(clipJump, 0.015f);
+        _animator.SetBool("Idle", false);
+        audioPlayer.PlayOneShot(clipJump, volumeScale*12f);
         if (_rigidbody2D.velocity.y > dbJumpHeight){
             _rigidbody2D.velocity += new Vector2(0, dbJumpHeight);
         }
@@ -357,10 +366,10 @@ public class Player : MonoBehaviour
 
     void wallJump(int wallDir) {
         _animator.SetTrigger("WallJump");
-
-        audioPlayer.PlayOneShot(clipJump, 0.015f);
+        _animator.SetBool("Idle", false);
+        audioPlayer.PlayOneShot(clipJump, volumeScale*10f);
         playerState = state.wallJumping;
-        _rigidbody2D.velocity = new Vector2(-wallDir*walkSpeed/1.5f, dbJumpHeight*1.5f);
+        _rigidbody2D.velocity = new Vector2(-wallDir*walkSpeed/1.1f, dbJumpHeight*1.5f);
         wallJumps -= 1;
         jumpCooldown += 0.6f;
         facing *= -1; // switch facing directions
@@ -370,9 +379,9 @@ public class Player : MonoBehaviour
 
     void wallSlide(bool slowly){
        _animator.SetBool("WallSlide", true);
-
+        _animator.SetBool("Idle", false);
         // TODO: implement user sliding down a wall
-        audioPlayer.PlayOneShot(clipSlide, 0.015f);
+        audioPlayer.PlayOneShot(clipSlide, volumeScale*0.2f);
         playerState = state.wallSliding;
         if (slowly){
             _rigidbody2D.velocity = new Vector2(0, -0.1f); // move down wall slower when moving toward wall
@@ -385,7 +394,7 @@ public class Player : MonoBehaviour
 
     //attack works both in air and on ground, and with pogoing
     void attack() {
-        audioPlayer.PlayOneShot(clipAttack, 0.01f);
+        audioPlayer.PlayOneShot(clipAttack, volumeScale);
         //float speedDif = Data.targetSpeed - _rigidbody2D.velocity.x;
         //float movement = speedDif * accelRate;
         //_rigidbody2D.AddForce(movement * Vector2.right, ForceMode2D.Force); //knockback, will come back to fix
