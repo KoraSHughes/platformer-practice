@@ -200,6 +200,10 @@ public class Player : MonoBehaviour
         bool wantsJump = Input.GetKey(KeyCode.Space) || Input.GetButton("XJump"); // jumping = space bar | Xbox A (button0)
         float xMove = Input.GetAxis("Horizontal");
 
+        _animator.SetBool("Idle", true);
+
+        //_animator.SetFloat("Walk", xMove);
+
         if (is_grounded){  // on the ground
             dbleJumps = defNumDbJumps;
             wallJumps = defNumWallJumps;
@@ -278,6 +282,8 @@ public class Player : MonoBehaviour
 
 #region movement
     void walk(float xMove, bool isAirborn = false) {
+        _animator.SetTrigger("Walk");
+        
         audioPlayer.PlayOneShot(clipWalk, 0.02f);
         facing = (xMove >= 0) ? 1 : -1;
         if (isAirborn == true){
@@ -294,6 +300,8 @@ public class Player : MonoBehaviour
     }
 
     void jump() {
+        _animator.SetTrigger("Jump");
+
         audioPlayer.PlayOneShot(clipJump, 0.015f);
         if(is_grounded) {
             playerState = state.jumping;
@@ -303,6 +311,8 @@ public class Player : MonoBehaviour
     }
 
     void dash(int face_override = 0) {
+        _animator.SetTrigger("Dash");
+
         //Note: we half our vertical velocity (better feel)
         audioPlayer.PlayOneShot(clipDash, 0.015f);
         if (face_override == 0) {
@@ -324,6 +334,8 @@ public class Player : MonoBehaviour
     }
 
     void doubleJump() {
+        _animator.SetTrigger("DbJump");
+
         audioPlayer.PlayOneShot(clipJump, 0.015f);
         if (_rigidbody2D.velocity.y > dbJumpHeight){
             _rigidbody2D.velocity += new Vector2(0, dbJumpHeight);
@@ -337,6 +349,8 @@ public class Player : MonoBehaviour
     }
 
     void wallJump(int wallDir) {
+        _animator.SetTrigger("WallJump");
+
         audioPlayer.PlayOneShot(clipJump, 0.015f);
         playerState = state.wallJumping;
         _rigidbody2D.velocity = new Vector2(-wallDir*walkSpeed/1.5f, dbJumpHeight*1.5f);
@@ -348,6 +362,8 @@ public class Player : MonoBehaviour
     }
 
     void wallSlide(bool slowly){
+        _animator.SetTrigger("WallSlide");
+
         // TODO: implement user sliding down a wall
         audioPlayer.PlayOneShot(clipSlide, 0.015f);
         playerState = state.wallSliding;
