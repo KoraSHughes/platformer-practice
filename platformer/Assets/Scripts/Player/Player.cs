@@ -116,7 +116,7 @@ public class Player : MonoBehaviour
             _animator.ResetTrigger("WallJump");
         }
         dashslider.value = (dashes > 0) ? 1.6f - dashCooldown : 0f;
-        jumpslider.value = (dbleJumps > 0) ? (0.6f - jumpCooldown) : 0f;
+        jumpslider.value = (defNumDbJumps == dbleJumps || dbleJumps > 0) ? (0.6f - jumpCooldown) : 0f;
         _rigidbody2D.angularVelocity = 0f; // TODO: make sure obj doesnt rotate
     #endregion
 
