@@ -202,8 +202,6 @@ public class Player : MonoBehaviour
         bool wantsJump = Input.GetKey(KeyCode.Space) || Input.GetButton("XJump"); // jumping = space bar | Xbox A (button0)
         float xMove = Input.GetAxis("Horizontal");
 
-        _animator.SetBool("Idle", true);
-
         //_animator.SetFloat("Walk", xMove);
 
         if (is_grounded){  // on the ground
