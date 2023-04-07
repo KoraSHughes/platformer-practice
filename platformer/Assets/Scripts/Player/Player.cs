@@ -91,8 +91,9 @@ public class Player : MonoBehaviour
     {
         float xSpeed = Input.GetAxis("Horizontal") * walkSpeed;
         float xScale = transform.localScale.x;
-        if((xSpeed < 0 && xScale > 0) || (xSpeed > 0 && xScale < 1))
+        if((xSpeed < 0 && xScale > 0) || (xSpeed > 0 && xScale < 0)) {
             transform.localScale *= new Vector2(-1, 1);
+        }
     }
     
     void Update()
