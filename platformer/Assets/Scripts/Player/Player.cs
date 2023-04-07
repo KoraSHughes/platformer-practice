@@ -200,7 +200,7 @@ public class Player : MonoBehaviour
     }
 
     void movementControl() {
-        bool wantsJump = Input.GetKey(KeyCode.Space) || (Input.GetAxis("Vertical") > 3); // || Input.GetButton("XJump")  jumping = space bar | Xbox A (button0)
+        bool wantsJump = Input.GetKey(KeyCode.Space) || (Input.GetAxis("Vertical") > 0); // || Input.GetButton("XJump")  jumping = space bar | Xbox A (button0)
         float xMove = Input.GetAxis("Horizontal");
 
         if (is_grounded){  // on the ground
