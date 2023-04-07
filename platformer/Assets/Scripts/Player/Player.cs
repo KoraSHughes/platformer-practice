@@ -109,6 +109,7 @@ public class Player : MonoBehaviour
         }
         else{
             dashCooldown = 0f;  // safety in case time subtracts more than necessary
+            _animator.ResetTrigger("Dash");
         }
 
         if (jumpCooldown > 0){
@@ -116,6 +117,8 @@ public class Player : MonoBehaviour
         }
         else{
             jumpCooldown = 0;
+            _animator.ResetTrigger("DbJump");
+            _animator.ResetTrigger("WallJump");
         }
 
         _rigidbody2D.angularVelocity = 0f; // TODO: make sure obj doesnt rotate
@@ -127,8 +130,7 @@ public class Player : MonoBehaviour
                 + ", Attacking: " + isAttacking.ToString()
                 // + ", Grounded|Still?" + (is_grounded, is_still()).ToString()
                   + ", Dash CD: " + dashCooldown.ToString()
-                  + ", Jump CD: " + jumpCooldown.ToString()
-                  + ", Anim State: " + _animator.GetCurrentAnimatorStateInfo(6).ToString());
+                  + ", Jump CD: " + jumpCooldown.ToString());
                 //   + ", WallDir?: " + check_for_wall().ToString());
 
         movementControl();
@@ -268,6 +270,7 @@ public class Player : MonoBehaviour
                     walk(xMove, true);
                 }
                 else{
+                    _animator.SetBool("Walk", false);
                     playerState = state.jumping;
                 }
             }
