@@ -295,6 +295,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TutorialUI
       objectReference: {fileID: 0}
+    - target: {fileID: 8892332510672797750, guid: a9a31aef5cbccc24c8f8433bb612dd37, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8892332510672797754, guid: a9a31aef5cbccc24c8f8433bb612dd37, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -381,27 +385,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8892332511788220388, guid: a9a31aef5cbccc24c8f8433bb612dd37, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 279.53
       objectReference: {fileID: 0}
     - target: {fileID: 8892332511788220388, guid: a9a31aef5cbccc24c8f8433bb612dd37, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 208.76
       objectReference: {fileID: 0}
     - target: {fileID: 8892332512184845395, guid: a9a31aef5cbccc24c8f8433bb612dd37, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8892332512184845395, guid: a9a31aef5cbccc24c8f8433bb612dd37, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8892332512184845395, guid: a9a31aef5cbccc24c8f8433bb612dd37, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 239.53
       objectReference: {fileID: 0}
     - target: {fileID: 8892332512184845395, guid: a9a31aef5cbccc24c8f8433bb612dd37, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 168.76
       objectReference: {fileID: 0}
     - target: {fileID: 8892332512184845395, guid: a9a31aef5cbccc24c8f8433bb612dd37, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -409,7 +413,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8892332512184845395, guid: a9a31aef5cbccc24c8f8433bb612dd37, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -104.38
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9a31aef5cbccc24c8f8433bb612dd37, type: 3}
@@ -1752,7 +1756,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1102043237
 Transform:
   m_ObjectHideFlags: 0
@@ -2350,6 +2354,10 @@ PrefabInstance:
     - target: {fileID: 17386959064248836, guid: 3baf3ee0c83d8b943a6412540ffe91fe, type: 3}
       propertyPath: m_Name
       value: UI
+      objectReference: {fileID: 0}
+    - target: {fileID: 17386959120342666, guid: 3baf3ee0c83d8b943a6412540ffe91fe, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3baf3ee0c83d8b943a6412540ffe91fe, type: 3}
