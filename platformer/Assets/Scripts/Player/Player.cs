@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
 #region variables
@@ -20,6 +21,10 @@ public class Player : MonoBehaviour
 
     int level;
     private Vector2 startingPosition;
+
+    private Slider dashslider;
+    private Slider jumpslider;
+    
     public enum state{  // TODO: attach sprites to states
         idle,
             // attacking,
@@ -73,6 +78,8 @@ public class Player : MonoBehaviour
         wallJumps = defNumWallJumps;
         dashes = defNumDashes;
 
+        dashslider = GameObject.FindGameObjectWithTag("DashSlider").GetComponent<Slider>();
+        jumpslider = GameObject.FindGameObjectWithTag("JumpSlider").GetComponent<Slider>();
         // soundJump.clip = clipJump;  // add sounds to audio listener objects to be played
         // soundAttack.clip = clipAttack;
         // soundDash.clip = clipDash;
@@ -120,7 +127,8 @@ public class Player : MonoBehaviour
             _animator.ResetTrigger("DbJump");
             _animator.ResetTrigger("WallJump");
         }
-
+        dashslider.value = 1.6f - dashCooldown;
+        jumpslider.value = 0.6f - jumpCooldown;
         _rigidbody2D.angularVelocity = 0f; // TODO: make sure obj doesnt rotate
     #endregion
 
@@ -130,11 +138,13 @@ public class Player : MonoBehaviour
                 + ", Attacking: " + isAttacking.ToString()
                 // + ", Grounded|Still?" + (is_grounded, is_still()).ToString()
                   + ", Dash CD: " + dashCooldown.ToString()
-                  + ", Jump CD: " + jumpCooldown.ToString());
-                //   + ", WallDir?: " + check_for_wall().ToString());
+                  + ", Jump CD: " + jumpCooldown.ToString()
+                  + ", WallDir?: " + check_for_wall().ToString());
 
         movementControl();
     }
+
+
 
     private void OnTriggerEnter2D(Collider2D other) {
         // if player collides with reward, destroy reward
