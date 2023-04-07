@@ -149,6 +149,7 @@ public class Player : MonoBehaviour
                 _gameManager.GetComponent<GameManager>().ZeroObtainedCrystals();
                 level = SceneManager.GetActiveScene().buildIndex + 1;
                 SceneManager.LoadScene(level);
+                PublicVars.nextLevel = false;
                 if (level != 6) {
                     _gameManager.GetComponent<GameManager>().LoadTutorial();
                 }
