@@ -151,6 +151,7 @@ public class Player : MonoBehaviour
                 _gameManager.GetComponent<GameManager>().ZeroObtainedCrystals();
                 level = SceneManager.GetActiveScene().buildIndex + 1;
                 SceneManager.LoadScene(level);
+                _gameManager.GetComponent<GameManager>().LoadTutorial();
             }
         }
         else if (other.CompareTag("killzone")) {

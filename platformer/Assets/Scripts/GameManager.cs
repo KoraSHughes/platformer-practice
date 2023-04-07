@@ -170,5 +170,12 @@ public class GameManager : MonoBehaviour
             crystalsNeeded = 4;
         }
     }
+
+    public void LoadTutorial() {
+        // get build index to use to determine which message to show
+        buildIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        // call coroutine
+        StartCoroutine(ShowTutorial());
+    }
     
 }
