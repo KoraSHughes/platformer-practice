@@ -16,7 +16,6 @@ public class Player : MonoBehaviour
     public AudioClip clipAttack;
     public AudioClip clipDash;
     public AudioClip clipSlide;
-    public AudioClip clipDeath;
 
     int level;
     private Vector2 playerPosition;
@@ -156,7 +155,6 @@ public class Player : MonoBehaviour
         else if (other.CompareTag("killzone")) {
             print("killzone");
             transform.position = playerPosition;
-            audioPlayer.PlayOneShot(clipDeath, 0.02f);
             StartCoroutine(_gameManager.GetComponent<GameManager>().ShowTutorial());
         }
     }
