@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     public AudioClip clipDash;
     public AudioClip clipSlide;
     public AudioClip clipDeath;
-    private float volumeScale = 0.5f;
+    private float volumeScale = 0.75f;
 
     int level;
     private Vector2 startingPosition;
