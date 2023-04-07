@@ -454,7 +454,7 @@ GameObject:
   - component: {fileID: 6437098096582027266}
   m_Layer: 6
   m_Name: feet
-  m_TagString: Untagged
+  m_TagString: playerFeet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
