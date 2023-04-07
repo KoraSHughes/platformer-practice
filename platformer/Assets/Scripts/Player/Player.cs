@@ -202,8 +202,6 @@ public class Player : MonoBehaviour
         bool wantsJump = Input.GetKey(KeyCode.Space) || Input.GetButton("XJump"); // jumping = space bar | Xbox A (button0)
         float xMove = Input.GetAxis("Horizontal");
 
-        //_animator.SetFloat("Walk", xMove);
-
         if (is_grounded){  // on the ground
             dbleJumps = defNumDbJumps;
             wallJumps = defNumWallJumps;
@@ -224,10 +222,12 @@ public class Player : MonoBehaviour
                 if (is_still()){
                     playerState = state.idle; // player idle
                     _animator.SetBool("Idle", true);
-                    _animator.SetBool("Walk", false);
+                    // _animator.SetBool("Walk", false);
+                    _animator.SetFloat("Walk", 0f);
                 }
                 else{
-                    _animator.SetBool("Walk", true);
+                    _animator.SetFloat("Walk", Mathf.Abs(_rigidbody2D.velocity.x));
+                    // _animator.SetBool("Walk", true);
                     _animator.SetBool("Idle", false);
                     playerState = state.walking;
                 }
@@ -270,7 +270,8 @@ public class Player : MonoBehaviour
                     walk(xMove, true);
                 }
                 else{
-                    _animator.SetBool("Walk", false);
+                    _animator.SetFloat("Walk", 0f);
+                    // _animator.SetBool("Walk", false);
                     playerState = state.jumping;
                 }
             }
@@ -293,8 +294,6 @@ public class Player : MonoBehaviour
 
 #region movement
     void walk(float xMove, bool isAirborn = false) {
-        _animator.SetBool("Walk", true);
-        
         audioPlayer.PlayOneShot(clipWalk, 0.02f);
         facing = (xMove >= 0) ? 1 : -1;
         if (isAirborn == true){
@@ -308,6 +307,7 @@ public class Player : MonoBehaviour
             // Note: we move slower horizontally in the air
             playerState = state.walking;
         }
+        _animator.SetFloat("Walk", Mathf.Abs(_rigidbody2D.velocity.x));
     }
 
     void jump() {
