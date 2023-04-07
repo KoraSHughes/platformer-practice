@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     public AudioClip clipDash;
     public AudioClip clipSlide;
     public AudioClip clipDeath;
-    private float volumeScale = 0.75f;
+    private float volumeScale = 0.9f;
 
     int level;
     private Vector2 startingPosition;
@@ -154,7 +154,7 @@ public class Player : MonoBehaviour
         else if (other.CompareTag("killzone")) {
             print("killzone");
             transform.position = startingPosition;
-            audioPlayer.PlayOneShot(clipDeath, volumeScale*2);
+            audioPlayer.PlayOneShot(clipDeath, volumeScale*7);
             StartCoroutine(_gameManager.GetComponent<GameManager>().ShowTutorial());
         }
     }
@@ -293,7 +293,7 @@ public class Player : MonoBehaviour
 
 #region movement
     void walk(float xMove, bool isAirborn = false) {
-        audioPlayer.PlayOneShot(clipWalk, volumeScale*0.1f);  // sounds off so taken out
+        audioPlayer.PlayOneShot(clipWalk, volumeScale*0.02f);  // sounds off so taken out
         facing = (xMove >= 0) ? 1 : -1;
         if (isAirborn == true){
             float addV = (_rigidbody2D.velocity.x*facing < walkSpeed*.5f) ? xMove*walkSpeed*0.007f : 0f;
@@ -316,7 +316,7 @@ public class Player : MonoBehaviour
     void jump() {
         _animator.SetBool("Jump", true);
         _animator.SetBool("Idle", false);
-        audioPlayer.PlayOneShot(clipJump, volumeScale*4f);
+        audioPlayer.PlayOneShot(clipJump, volumeScale*12f);
         if(is_grounded) {
             playerState = state.jumping;
             _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, jumpHeight);
@@ -328,7 +328,7 @@ public class Player : MonoBehaviour
         _animator.SetTrigger("Dash");
         _animator.SetBool("Idle", false);
         //Note: we half our vertical velocity (better feel)
-        audioPlayer.PlayOneShot(clipDash, volumeScale*1.5f);
+        audioPlayer.PlayOneShot(clipDash, volumeScale*10f);
         if (face_override == 0) {
             _rigidbody2D.velocity = new Vector2(dashDist*facing, _rigidbody2D.velocity.y/4);
         }
@@ -350,7 +350,7 @@ public class Player : MonoBehaviour
     void doubleJump() {
         _animator.SetTrigger("DbJump");
         _animator.SetBool("Idle", false);
-        audioPlayer.PlayOneShot(clipJump, volumeScale*4f);
+        audioPlayer.PlayOneShot(clipJump, volumeScale*12f);
         if (_rigidbody2D.velocity.y > dbJumpHeight){
             _rigidbody2D.velocity += new Vector2(0, dbJumpHeight);
         }
@@ -365,9 +365,9 @@ public class Player : MonoBehaviour
     void wallJump(int wallDir) {
         _animator.SetTrigger("WallJump");
         _animator.SetBool("Idle", false);
-        audioPlayer.PlayOneShot(clipJump, volumeScale*4f);
+        audioPlayer.PlayOneShot(clipJump, volumeScale*10f);
         playerState = state.wallJumping;
-        _rigidbody2D.velocity = new Vector2(-wallDir*walkSpeed/1.5f, dbJumpHeight*1.5f);
+        _rigidbody2D.velocity = new Vector2(-wallDir*walkSpeed/1.1f, dbJumpHeight*1.5f);
         wallJumps -= 1;
         jumpCooldown += 0.6f;
         facing *= -1; // switch facing directions
@@ -379,7 +379,7 @@ public class Player : MonoBehaviour
        _animator.SetBool("WallSlide", true);
         _animator.SetBool("Idle", false);
         // TODO: implement user sliding down a wall
-        audioPlayer.PlayOneShot(clipSlide, volumeScale*0.5f);
+        audioPlayer.PlayOneShot(clipSlide, volumeScale*0.2f);
         playerState = state.wallSliding;
         if (slowly){
             _rigidbody2D.velocity = new Vector2(0, -0.1f); // move down wall slower when moving toward wall
