@@ -10,6 +10,9 @@ TagManager:
   - reward
   - door
   - killzone
+  - ScoreUI
+  - CrystalUI
+  - UI
   layers:
   - Default
   - TransparentFX
