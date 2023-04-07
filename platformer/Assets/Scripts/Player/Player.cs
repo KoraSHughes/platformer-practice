@@ -200,7 +200,7 @@ public class Player : MonoBehaviour
     }
 
     void movementControl() {
-        bool wantsJump = Input.GetKey(KeyCode.Space) || Input.GetButton("XJump"); // jumping = space bar | Xbox A (button0)
+        bool wantsJump = Input.GetKey(KeyCode.Space) || (Input.GetAxis("Vertical") > 0); // || Input.GetButton("XJump")  jumping = space bar | Xbox A (button0)
         float xMove = Input.GetAxis("Horizontal");
 
         if (is_grounded){  // on the ground
@@ -210,7 +210,7 @@ public class Player : MonoBehaviour
             _animator.SetBool("Jump", false);
             _animator.SetBool("WallSlide", false);
 
-            if (Input.GetButton("Dash") && dashCooldown == 0) {  // dashing = Shift | Xbox B (button1)
+            if (Input.GetButton("Fire3") && dashCooldown == 0) {  // dashing = Shift | Xbox B (button1)
                 dash();
             }
             else if (wantsJump && jumpCooldown == 0) { // jumping
@@ -262,7 +262,7 @@ public class Player : MonoBehaviour
             else{
                 _animator.SetBool("Jump", true);
                 _animator.SetBool("WallSlide", false);
-                if(Input.GetButton("Dash") && dashCooldown == 0 && dashes > 0){  // dashing = Shift | Xbox B (button1)
+                if(Input.GetButton("Fire3") && dashCooldown == 0 && dashes > 0){  // dashing = Shift | Xbox B (button1)
                     dash();
                 }
                 else if (wantsJump && jumpCooldown == 0 && dbleJumps > 0) {  // double-jumping
@@ -279,7 +279,7 @@ public class Player : MonoBehaviour
             }
         }
         
-        if (Input.GetKey(KeyCode.Mouse0) || Input.GetButton("XAtk")){ // attacking = LMB | Xbox X (button2)
+        if (Input.GetKey(KeyCode.Mouse0)){ // attacking = LMB | Xbox X (button2)
             //TODO: maybe add a attacking cooldown
             attack();
             isAttacking = true;
