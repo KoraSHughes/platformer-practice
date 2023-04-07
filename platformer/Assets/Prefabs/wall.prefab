@@ -47,8 +47,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14994b41fb51241668d3a882c86dfdd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xthreshold: 0.65
-  ythreshold: 2.7
+  xthreshold: 0.2
+  ythreshold: 1
 --- !u!212 &1280163011642020245
 SpriteRenderer:
   m_ObjectHideFlags: 0
