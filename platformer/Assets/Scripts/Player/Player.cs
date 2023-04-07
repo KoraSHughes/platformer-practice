@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
     public AudioClip clipDeath;
 
     int level;
-    private Vector2 playerPosition;
+    private Vector2 startingPosition;
     public enum state{  // TODO: attach sprites to states
         idle,
             // attacking,
@@ -66,7 +66,7 @@ public class Player : MonoBehaviour
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
 
-        playerPosition = GameObject.FindWithTag("Player").transform.position;
+        startingPosition = transform.position;
         walls = GameObject.FindGameObjectsWithTag("wall");
 
         dbleJumps = defNumDbJumps;
@@ -132,10 +132,6 @@ public class Player : MonoBehaviour
                   + ", WallDir?: " + check_for_wall().ToString());
 
         movementControl();
-
-        if (transform.position.y < -10) {
-            transform.position = playerPosition;
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
@@ -157,7 +153,7 @@ public class Player : MonoBehaviour
         }
         else if (other.CompareTag("killzone")) {
             print("killzone");
-            transform.position = playerPosition;
+            transform.position = startingPosition;
             audioPlayer.PlayOneShot(clipDeath, 0.02f);
             StartCoroutine(_gameManager.GetComponent<GameManager>().ShowTutorial());
         }
