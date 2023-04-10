@@ -200,7 +200,7 @@ public class Player : MonoBehaviour
     }
 
     void movementControl() {
-        bool wantsJump = Input.GetKey(KeyCode.Space) || (Input.GetAxis("Vertical") > 0); // || Input.GetButton("XJump")  jumping = space bar | Xbox A (button0)
+        bool wantsJump = Input.GetKey(KeyCode.Space) || (Input.GetButton("A Button")); // jumping = space bar | Xbox A (button0)
         float xMove = Input.GetAxis("Horizontal");
 
         if (is_grounded){  // on the ground
@@ -210,7 +210,7 @@ public class Player : MonoBehaviour
             _animator.SetBool("Jump", false);
             _animator.SetBool("WallSlide", false);
 
-            if (Input.GetButton("Fire3") && dashCooldown == 0) {  // dashing = Shift | Xbox B (button1)
+            if ((Input.GetButton("Fire3") || (Input.GetButton("X Button"))) && dashCooldown == 0) {  // dashing = Shift | Xbox B (button1)
                 dash();
             }
             else if (wantsJump && jumpCooldown == 0) { // jumping
@@ -246,7 +246,7 @@ public class Player : MonoBehaviour
             if (playerState == state.wallSliding){  // currently sliding on a wall
                 _animator.SetBool("Jump", false);
                 _animator.SetBool("WallSlide", true);
-                if(Input.GetButton("Fire3") && dashCooldown == 0){  // dashing
+                if((Input.GetButton("Fire3") || Input.GetButton("X Button")) && dashCooldown == 0){  // dashing
                     dash(-wallDir);  // can only dash opposite to wall (-facing)?
                 }
                 else if (wantsJump && jumpCooldown == 0 && wallJumps > 0) { // wall-jump
@@ -262,7 +262,7 @@ public class Player : MonoBehaviour
             else{
                 _animator.SetBool("Jump", true);
                 _animator.SetBool("WallSlide", false);
-                if(Input.GetButton("Fire3") && dashCooldown == 0 && dashes > 0){  // dashing = Shift | Xbox B (button1)
+                if((Input.GetButton("Fire3") || Input.GetButton("X Button")) && dashCooldown == 0 && dashes > 0){  // dashing = Shift | Xbox B (button1)
                     dash();
                 }
                 else if (wantsJump && jumpCooldown == 0 && dbleJumps > 0) {  // double-jumping

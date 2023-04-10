@@ -171,10 +171,10 @@ TextureImporter:
       name: sketch sprite sheet_4
       rect:
         serializedVersion: 2
-        x: 1995
-        y: 2205
+        x: 1990
+        y: 2204
         width: 276
-        height: 652
+        height: 642
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
